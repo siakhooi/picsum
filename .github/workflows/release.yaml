@@ -22,7 +22,7 @@ jobs:
           version: latest
           args: release --clean
         env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN_TO_UPLOAD_ASSETS }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v6
         env:
