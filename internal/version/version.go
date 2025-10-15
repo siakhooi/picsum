@@ -3,7 +3,7 @@ Package version return version
 */
 package version
 
-var picSumVersion = "0.0.2"
+const picSumVersion = "0.0.3"
 
 /*
 GetVersion return version
