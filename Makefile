@@ -8,7 +8,9 @@ test:
 golangci-lint:
 	golangci-lint run
 
-all: clean test golangci-lint build
+set-version:
+	scripts/set-version.sh
+all: clean set-version test golangci-lint build
 
 commit:
 	scripts/git-commit-and-push.sh
