@@ -2,7 +2,7 @@ package version
 
 import "testing"
 
-const expectedPicsumVersion = "0.0.3"
+const expectedPicsumVersion = "0.0.4"
 
 func TestGetVersion(t *testing.T) {
 	actual := GetVersion()

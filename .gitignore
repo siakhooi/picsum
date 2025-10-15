@@ -1,4 +1,5 @@
 bin/
 # Added by goreleaser init:
 dist/
-coverage.out
+test-coverage.out
+test-report.json
