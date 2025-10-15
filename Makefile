@@ -18,9 +18,11 @@ commit:
 release:
 	scripts/create-release.sh
 
+commit-watch: commit
+	gh run watch
 
-
-
+release-watch: release
+	gh run watch
 
 binrun:
 	bin/picsum-linux-amd64

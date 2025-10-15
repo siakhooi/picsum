@@ -6,7 +6,7 @@ on:
       - created
 
 jobs:
-  releaes:
+  release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -17,6 +17,7 @@ jobs:
         with:
           version: 'latest'
           args: --timeout 5m
+      - run: scripts/test.sh
       - uses: goreleaser/goreleaser-action@v6
         with:
           version: latest
