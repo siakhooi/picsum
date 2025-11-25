@@ -21,12 +21,16 @@ jobs:
           version: 'latest'
           args: --timeout 5m
       - run: scripts/test.sh
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v6
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - uses: qltysh/qlty-action/coverage@v2
+        with:
+          token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
+          files: test-coverage.out
       - run: scripts/build.sh
       - uses: goreleaser/goreleaser-action@v6
         with:
           version: latest
           args: build --snapshot --clean
-      - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v6
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
