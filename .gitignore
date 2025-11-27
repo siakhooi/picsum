@@ -3,3 +3,4 @@ bin/
 dist/
 test-coverage.out
 test-report.json
+.scannerwork/
