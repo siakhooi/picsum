@@ -5,6 +5,7 @@ cli to query https://picsum.photos
 ### Quality
 
 - https://sonarcloud.io/project/overview?id=siakhooi_picsum
+- https://qlty.sh/gh/siakhooi/projects/picsum
 
 ## Badges
 
@@ -27,6 +28,10 @@ cli to query https://picsum.photos
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/siakhooi/picsum?label=GPR%20release&logo=github)
 ![GitHub all releases](https://img.shields.io/github/downloads/siakhooi/picsum/total?color=33cb56&logo=github)
 ![GitHub Release Date](https://img.shields.io/github/release-date/siakhooi/picsum?logo=github)
+
+![Quality-Qlty](https://img.shields.io/badge/Quality-Qlty-purple)
+[![Maintainability](https://qlty.sh/gh/siakhooi/projects/picsum/maintainability.svg)](https://qlty.sh/gh/siakhooi/projects/picsum)
+[![Code Coverage](https://qlty.sh/gh/siakhooi/projects/picsum/coverage.svg)](https://qlty.sh/gh/siakhooi/projects/picsum)
 
 ![Quality-Sonar](https://img.shields.io/badge/Quality-SonarCloud-purple)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=siakhooi_picsum&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=siakhooi_picsum)
