@@ -1,5 +1,5 @@
 clean:
-	rm -rf bin
+	rm -rf bin dist  *.jpg
 build:
 	scripts/build.sh
 	goreleaser build --snapshot --clean
@@ -24,5 +24,6 @@ commit-watch: commit
 release-watch: release
 	gh run watch
 
-binrun:
-	bin/picsum-linux-amd64
+run:
+	bin/picsum-linux-amd64 200
+	bin/picsum-linux-amd64 200 300
