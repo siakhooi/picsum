@@ -18,15 +18,23 @@ import (
 func main() {
 	cmd := &cli.Command{
 		Name:    "picsum",
-		Usage:   "picsum <number> or picsum <width> <height>",
+		Usage:   "picsum [-h] [-v] [id imageId] (size|width height)",
 		Version: version.GetVersion(),
+		Flags: []cli.Flag{
+			&cli.StringFlag{
+				Name:    "id",
+				Aliases: []string{"i"},
+				Usage:   "specific image ID from picsum.photos",
+			},
+		},
 		Action: func(_ context.Context, c *cli.Command) error {
 			args := c.Args().Slice()
 
 			if len(args) == 0 || len(args) > 2 {
-				return fmt.Errorf("invalid arguments\nUsage: picsum <number> or picsum <width> <height>")
+				return fmt.Errorf("invalid arguments\nUsage: picsum [-h] [-v] [id imageId] (size|width height)")
 			}
 
+			imageID := c.String("id")
 			var url, filename string
 
 			if len(args) == 1 {
@@ -35,8 +43,13 @@ func main() {
 				if err != nil {
 					return fmt.Errorf("invalid number: %s", args[0])
 				}
-				url = fmt.Sprintf("https://picsum.photos/%d", num1)
-				filename = fmt.Sprintf("%d.jpg", num1)
+				if imageID != "" {
+					url = fmt.Sprintf("https://picsum.photos/id/%s/%d", imageID, num1)
+					filename = fmt.Sprintf("id_%s_%d.jpg", imageID, num1)
+				} else {
+					url = fmt.Sprintf("https://picsum.photos/%d", num1)
+					filename = fmt.Sprintf("%d.jpg", num1)
+				}
 			} else {
 				// Parse two numbers
 				num1, err := strconv.Atoi(args[0])
@@ -47,8 +60,13 @@ func main() {
 				if err != nil {
 					return fmt.Errorf("invalid second number: %s", args[1])
 				}
-				url = fmt.Sprintf("https://picsum.photos/%d/%d", num1, num2)
-				filename = fmt.Sprintf("%dx%d.jpg", num1, num2)
+				if imageID != "" {
+					url = fmt.Sprintf("https://picsum.photos/id/%s/%d/%d", imageID, num1, num2)
+					filename = fmt.Sprintf("id_%s_%dx%d.jpg", imageID, num1, num2)
+				} else {
+					url = fmt.Sprintf("https://picsum.photos/%d/%d", num1, num2)
+					filename = fmt.Sprintf("%dx%d.jpg", num1, num2)
+				}
 			}
 
 			// Download the image
