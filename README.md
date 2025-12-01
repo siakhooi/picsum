@@ -2,7 +2,17 @@
 
 cli to query https://picsum.photos
 
-### Quality
+## Installation
+```
+go install github.com/siakhooi/picsum/cmd/picsum@latest
+```
+
+## Usage
+```
+picsum [-h] [-v] [id imageId] (size|width height)
+```
+
+## Quality
 
 - https://sonarcloud.io/project/overview?id=siakhooi_picsum
 - https://qlty.sh/gh/siakhooi/projects/picsum

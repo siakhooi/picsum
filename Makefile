@@ -25,5 +25,8 @@ release-watch: release
 	gh run watch
 
 run:
+	bin/picsum-linux-amd64 -h
+	bin/picsum-linux-amd64 -i 237 200
 	bin/picsum-linux-amd64 200
+	bin/picsum-linux-amd64 -i 237 200 300
 	bin/picsum-linux-amd64 200 300
