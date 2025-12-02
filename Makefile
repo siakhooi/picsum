@@ -26,7 +26,13 @@ release-watch: release
 
 run:
 	bin/picsum-linux-amd64 -h
-	bin/picsum-linux-amd64 -i 237 200
 	bin/picsum-linux-amd64 200
-	bin/picsum-linux-amd64 -i 237 200 300
 	bin/picsum-linux-amd64 200 300
+	bin/picsum-linux-amd64 -i 237 200
+	bin/picsum-linux-amd64 -i 237 200 300
+	bin/picsum-linux-amd64 -s picsumabc 200
+	bin/picsum-linux-amd64 -s hellohello 200 300
+run-i:
+	bin/picsum-linux-amd64
+	bin/picsum-linux-amd64 200 300 400
+	bin/picsum-linux-amd64 -i 237 -s hellohello 200 300

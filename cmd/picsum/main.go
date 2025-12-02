@@ -18,7 +18,7 @@ import (
 func main() {
 	cmd := &cli.Command{
 		Name:    "picsum",
-		Usage:   "picsum [-h] [-v] [id imageId] (size|width height)",
+		Usage:   "picsum [-h] [-v] [-i imageId | -s seed] (size|width height)",
 		Version: version.GetVersion(),
 		Flags: []cli.Flag{
 			&cli.StringFlag{
@@ -26,15 +26,26 @@ func main() {
 				Aliases: []string{"i"},
 				Usage:   "specific image ID from picsum.photos",
 			},
+			&cli.StringFlag{
+				Name:    "seed",
+				Aliases: []string{"s"},
+				Usage:   "seed for random image generation from picsum.photos",
+			},
 		},
 		Action: func(_ context.Context, c *cli.Command) error {
 			args := c.Args().Slice()
 
 			if len(args) == 0 || len(args) > 2 {
-				return fmt.Errorf("invalid arguments\nUsage: picsum [-h] [-v] [id imageId] (size|width height)")
+				return fmt.Errorf("invalid arguments\nUsage: picsum [-h] [-v] [-i imageId | -s seed] (size|width height)")
 			}
 
 			imageID := c.String("id")
+			seed := c.String("seed")
+
+			// Check mutual exclusivity
+			if imageID != "" && seed != "" {
+				return fmt.Errorf("options --id and --seed are mutually exclusive")
+			}
 			var url, filename string
 
 			if len(args) == 1 {
@@ -46,6 +57,9 @@ func main() {
 				if imageID != "" {
 					url = fmt.Sprintf("https://picsum.photos/id/%s/%d", imageID, num1)
 					filename = fmt.Sprintf("id_%s_%d.jpg", imageID, num1)
+				} else if seed != "" {
+					url = fmt.Sprintf("https://picsum.photos/seed/%s/%d", seed, num1)
+					filename = fmt.Sprintf("seed_%s_%d.jpg", seed, num1)
 				} else {
 					url = fmt.Sprintf("https://picsum.photos/%d", num1)
 					filename = fmt.Sprintf("%d.jpg", num1)
@@ -63,6 +77,9 @@ func main() {
 				if imageID != "" {
 					url = fmt.Sprintf("https://picsum.photos/id/%s/%d/%d", imageID, num1, num2)
 					filename = fmt.Sprintf("id_%s_%dx%d.jpg", imageID, num1, num2)
+				} else if seed != "" {
+					url = fmt.Sprintf("https://picsum.photos/seed/%s/%d/%d", seed, num1, num2)
+					filename = fmt.Sprintf("seed_%s_%dx%d.jpg", seed, num1, num2)
 				} else {
 					url = fmt.Sprintf("https://picsum.photos/%d/%d", num1, num2)
 					filename = fmt.Sprintf("%dx%d.jpg", num1, num2)
