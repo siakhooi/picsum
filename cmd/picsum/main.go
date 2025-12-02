@@ -18,7 +18,7 @@ import (
 func main() {
 	cmd := &cli.Command{
 		Name:    "picsum",
-		Usage:   "picsum [-h] [-v] [-i imageId | -s seed] (size|width height)",
+		Usage:   "fetch photo from https://picsum.photos",
 		Version: version.GetVersion(),
 		Flags: []cli.Flag{
 			&cli.StringFlag{

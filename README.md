@@ -1,6 +1,6 @@
 # picsum
 
-cli to query https://picsum.photos
+fetch photo from https://picsum.photos
 
 ## Installation
 ```
