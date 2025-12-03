@@ -19,7 +19,7 @@ func main() {
 	cmd := &cli.Command{
 		Name:    "picsum",
 		Usage:   "fetch photo from https://picsum.photos",
-		Version: version.GetVersion(),
+		Version: version.Version(),
 		Flags: []cli.Flag{
 			&cli.StringFlag{
 				Name:    "id",

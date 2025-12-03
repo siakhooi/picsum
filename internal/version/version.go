@@ -6,8 +6,8 @@ package version
 const picSumVersion = "0.3.0"
 
 /*
-GetVersion return version
+Version return version
 */
-func GetVersion() string {
+func Version() string {
 	return picSumVersion
 }

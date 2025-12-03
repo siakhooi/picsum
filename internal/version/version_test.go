@@ -5,7 +5,7 @@ import "testing"
 const expectedPicsumVersion = "0.3.0"
 
 func TestGetVersion(t *testing.T) {
-	actual := GetVersion()
+	actual := Version()
 	expected := expectedPicsumVersion
 
 	if actual != expected {
