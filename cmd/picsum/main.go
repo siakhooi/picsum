@@ -36,6 +36,11 @@ func main() {
 				Aliases: []string{"g"},
 				Usage:   "convert image to grayscale",
 			},
+			&cli.BoolFlag{
+				Name:    "blur",
+				Aliases: []string{"b"},
+				Usage:   "apply blur effect to image",
+			},
 		},
 		Action: func(_ context.Context, c *cli.Command) error {
 			args := c.Args().Slice()
@@ -47,13 +52,14 @@ func main() {
 			imageID := c.String("id")
 			seed := c.String("seed")
 			grayscale := c.Bool("gray")
+			blur := c.Bool("blur")
 
 			// Check mutual exclusivity
 			if imageID != "" && seed != "" {
 				return fmt.Errorf("options --id and --seed are mutually exclusive")
 			}
 			// Build URL and filename based on arguments
-			url, filename, err := urlbuilder.BuildURL(args, imageID, seed, grayscale)
+			url, filename, err := urlbuilder.BuildURL(args, imageID, seed, grayscale, blur)
 			if err != nil {
 				return err
 			}

@@ -9,7 +9,7 @@ import (
 )
 
 // BuildURL constructs the picsum.photos URL and filename based on arguments and options
-func BuildURL(args []string, imageID, seed string, grayscale bool) (url, filename string, err error) {
+func BuildURL(args []string, imageID, seed string, grayscale, blur bool) (url, filename string, err error) {
 	if len(args) == 1 {
 		// Parse single number
 		num1, err := strconv.Atoi(args[0])
@@ -48,9 +48,15 @@ func BuildURL(args []string, imageID, seed string, grayscale bool) (url, filenam
 		}
 	}
 
-	if grayscale {
+	if grayscale && blur {
+		url += "?grayscale&blur"
+		filename += "_gray_blur"
+	} else if grayscale {
 		url += "?grayscale"
 		filename += "_gray"
+	} else if blur {
+		url += "?blur"
+		filename += "_blur"
 	}
 	filename += ".jpg"
 

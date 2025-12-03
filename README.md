@@ -16,12 +16,13 @@ USAGE:
    picsum [global options]
 
 VERSION:
-   0.4.0
+   0.5.0
 
 GLOBAL OPTIONS:
    --id string, -i string    specific image ID from picsum.photos
    --seed string, -s string  seed for random image generation from picsum.photos
    --gray, -g                convert image to grayscale
+   --blur, -b                apply blur effect to image
    --help, -h                show help
    --version, -v             print the version
 ```
