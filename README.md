@@ -9,7 +9,21 @@ go install github.com/siakhooi/picsum/cmd/picsum@latest
 
 ## Usage
 ```
-picsum [-h] [-v] [id imageId] (size|width height)
+NAME:
+   picsum - fetch photo from https://picsum.photos
+
+USAGE:
+   picsum [global options]
+
+VERSION:
+   0.4.0
+
+GLOBAL OPTIONS:
+   --id string, -i string    specific image ID from picsum.photos
+   --seed string, -s string  seed for random image generation from picsum.photos
+   --gray, -g                convert image to grayscale
+   --help, -h                show help
+   --version, -v             print the version
 ```
 
 ## Quality
