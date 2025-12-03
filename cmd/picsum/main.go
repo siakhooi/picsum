@@ -41,7 +41,7 @@ func main() {
 			args := c.Args().Slice()
 
 			if len(args) == 0 || len(args) > 2 {
-				return fmt.Errorf("invalid arguments\nUsage: picsum [-h] [-v] [-i imageId | -s seed] (size|width height)")
+				return fmt.Errorf("invalid arguments")
 			}
 
 			imageID := c.String("id")
@@ -71,7 +71,11 @@ func main() {
 	}
 
 	if err := cmd.Run(context.Background(), os.Args); err != nil {
-		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error: %v\n\n", err)
+		err := cli.ShowAppHelp(cmd)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+		}
 		os.Exit(1)
 	}
 }
