@@ -6,4 +6,5 @@ set -e
 
 RELEASE_NOTE="$RELEASE_TITLE"
 
+set -x
 gh release create "$RELEASE_VERSION" --title "$RELEASE_TITLE" --notes "${RELEASE_NOTE}" --latest
