@@ -31,6 +31,11 @@ func main() {
 				Aliases: []string{"s"},
 				Usage:   "seed for random image generation from picsum.photos",
 			},
+			&cli.BoolFlag{
+				Name:    "gray",
+				Aliases: []string{"g"},
+				Usage:   "convert image to grayscale",
+			},
 		},
 		Action: func(_ context.Context, c *cli.Command) error {
 			args := c.Args().Slice()
@@ -41,13 +46,14 @@ func main() {
 
 			imageID := c.String("id")
 			seed := c.String("seed")
+			grayscale := c.Bool("gray")
 
 			// Check mutual exclusivity
 			if imageID != "" && seed != "" {
 				return fmt.Errorf("options --id and --seed are mutually exclusive")
 			}
 			// Build URL and filename based on arguments
-			url, filename, err := urlbuilder.BuildURL(args, imageID, seed)
+			url, filename, err := urlbuilder.BuildURL(args, imageID, seed, grayscale)
 			if err != nil {
 				return err
 			}

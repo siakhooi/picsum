@@ -6,7 +6,7 @@ import (
 
 func TestBuildURL_SingleArgument_NoOptions(t *testing.T) {
 	args := []string{"300"}
-	url, filename, err := BuildURL(args, "", "")
+	url, filename, err := BuildURL(args, "", "", false)
 
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -25,7 +25,7 @@ func TestBuildURL_SingleArgument_NoOptions(t *testing.T) {
 
 func TestBuildURL_SingleArgument_WithImageID(t *testing.T) {
 	args := []string{"300"}
-	url, filename, err := BuildURL(args, "237", "")
+	url, filename, err := BuildURL(args, "237", "", false)
 
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -44,7 +44,7 @@ func TestBuildURL_SingleArgument_WithImageID(t *testing.T) {
 
 func TestBuildURL_SingleArgument_WithSeed(t *testing.T) {
 	args := []string{"300"}
-	url, filename, err := BuildURL(args, "", "picsum")
+	url, filename, err := BuildURL(args, "", "picsum", false)
 
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -63,7 +63,7 @@ func TestBuildURL_SingleArgument_WithSeed(t *testing.T) {
 
 func TestBuildURL_TwoArguments_NoOptions(t *testing.T) {
 	args := []string{"300", "200"}
-	url, filename, err := BuildURL(args, "", "")
+	url, filename, err := BuildURL(args, "", "", false)
 
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -82,7 +82,7 @@ func TestBuildURL_TwoArguments_NoOptions(t *testing.T) {
 
 func TestBuildURL_TwoArguments_WithImageID(t *testing.T) {
 	args := []string{"300", "200"}
-	url, filename, err := BuildURL(args, "237", "")
+	url, filename, err := BuildURL(args, "237", "", false)
 
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -101,7 +101,7 @@ func TestBuildURL_TwoArguments_WithImageID(t *testing.T) {
 
 func TestBuildURL_TwoArguments_WithSeed(t *testing.T) {
 	args := []string{"300", "200"}
-	url, filename, err := BuildURL(args, "", "picsum")
+	url, filename, err := BuildURL(args, "", "picsum", false)
 
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -120,7 +120,7 @@ func TestBuildURL_TwoArguments_WithSeed(t *testing.T) {
 
 func TestBuildURL_InvalidSingleNumber(t *testing.T) {
 	args := []string{"abc"}
-	_, _, err := BuildURL(args, "", "")
+	_, _, err := BuildURL(args, "", "", false)
 
 	if err == nil {
 		t.Fatal("expected error for invalid number, got nil")
@@ -134,7 +134,7 @@ func TestBuildURL_InvalidSingleNumber(t *testing.T) {
 
 func TestBuildURL_InvalidFirstNumber(t *testing.T) {
 	args := []string{"abc", "200"}
-	_, _, err := BuildURL(args, "", "")
+	_, _, err := BuildURL(args, "", "", false)
 
 	if err == nil {
 		t.Fatal("expected error for invalid first number, got nil")
@@ -148,7 +148,7 @@ func TestBuildURL_InvalidFirstNumber(t *testing.T) {
 
 func TestBuildURL_InvalidSecondNumber(t *testing.T) {
 	args := []string{"300", "xyz"}
-	_, _, err := BuildURL(args, "", "")
+	_, _, err := BuildURL(args, "", "", false)
 
 	if err == nil {
 		t.Fatal("expected error for invalid second number, got nil")
@@ -157,5 +157,62 @@ func TestBuildURL_InvalidSecondNumber(t *testing.T) {
 	expectedError := "invalid second number: xyz"
 	if err.Error() != expectedError {
 		t.Errorf("expected error %q, got %q", expectedError, err.Error())
+	}
+}
+
+func TestBuildURL_WithGrayscale_SingleArgument(t *testing.T) {
+	args := []string{"300"}
+	url, filename, err := BuildURL(args, "", "", true)
+
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	expectedURL := "https://picsum.photos/300?grayscale"
+	expectedFilename := "300_gray.jpg"
+
+	if url != expectedURL {
+		t.Errorf("expected URL %q, got %q", expectedURL, url)
+	}
+	if filename != expectedFilename {
+		t.Errorf("expected filename %q, got %q", expectedFilename, filename)
+	}
+}
+
+func TestBuildURL_WithGrayscale_TwoArguments_WithImageID(t *testing.T) {
+	args := []string{"300", "200"}
+	url, filename, err := BuildURL(args, "237", "", true)
+
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	expectedURL := "https://picsum.photos/id/237/300/200?grayscale"
+	expectedFilename := "id_237_300x200_gray.jpg"
+
+	if url != expectedURL {
+		t.Errorf("expected URL %q, got %q", expectedURL, url)
+	}
+	if filename != expectedFilename {
+		t.Errorf("expected filename %q, got %q", expectedFilename, filename)
+	}
+}
+
+func TestBuildURL_WithGrayscale_WithSeed(t *testing.T) {
+	args := []string{"300"}
+	url, filename, err := BuildURL(args, "", "picsum", true)
+
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	expectedURL := "https://picsum.photos/seed/picsum/300?grayscale"
+	expectedFilename := "seed_picsum_300_gray.jpg"
+
+	if url != expectedURL {
+		t.Errorf("expected URL %q, got %q", expectedURL, url)
+	}
+	if filename != expectedFilename {
+		t.Errorf("expected filename %q, got %q", expectedFilename, filename)
 	}
 }
