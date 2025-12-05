@@ -41,6 +41,11 @@ func main() {
 				Aliases: []string{"b"},
 				Usage:   "apply blur effect to image",
 			},
+			&cli.IntFlag{
+				Name:    "blurlevel",
+				Aliases: []string{"B"},
+				Usage:   "apply blur effect with specific level 1-10 (supersedes -b)",
+			},
 		},
 		Action: func(_ context.Context, c *cli.Command) error {
 			args := c.Args().Slice()
@@ -53,13 +58,24 @@ func main() {
 			seed := c.String("seed")
 			grayscale := c.Bool("gray")
 			blur := c.Bool("blur")
+			blurLevel := c.Int("blurlevel")
+
+			// Validate blur level range
+			if blurLevel != 0 && (blurLevel < 1 || blurLevel > 10) {
+				return fmt.Errorf("blur level must be between 1 and 10, got %d", blurLevel)
+			}
+
+			// If blurlevel is specified, it supersedes blur
+			if blurLevel > 0 {
+				blur = false
+			}
 
 			// Check mutual exclusivity
 			if imageID != "" && seed != "" {
 				return fmt.Errorf("options --id and --seed are mutually exclusive")
 			}
 			// Build URL and filename based on arguments
-			url, filename, err := urlbuilder.BuildURL(args, imageID, seed, grayscale, blur)
+			url, filename, err := urlbuilder.BuildURL(args, imageID, seed, grayscale, blur, blurLevel)
 			if err != nil {
 				return err
 			}
