@@ -94,10 +94,6 @@ func main() {
 
 	if err := cmd.Run(context.Background(), os.Args); err != nil {
 		fmt.Fprintf(os.Stderr, "Error: %v\n\n", err)
-		err := cli.ShowAppHelp(cmd)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
-		}
 		os.Exit(1)
 	}
 }
