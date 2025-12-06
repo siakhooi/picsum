@@ -20,6 +20,7 @@ type Options struct {
 	BlurLevel  int
 	Quiet      bool
 	OutputPath string
+	Force      bool
 }
 
 // ValidateArguments validates the number of command-line arguments
@@ -70,5 +71,5 @@ func ProcessImage(args []string, opts *Options) error {
 	defer func() { _ = resp.Body.Close() }()
 
 	// Save the image to file
-	return output.SaveImage(resp, filename, opts.Quiet)
+	return output.SaveImage(resp, filename, opts.Quiet, opts.Force)
 }

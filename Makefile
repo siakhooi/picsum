@@ -37,6 +37,8 @@ run:
 	bin/picsum-linux-amd64 -g -s hellohello 200 300
 	bin/picsum-linux-amd64 -b -s hellohello 200 300
 	bin/picsum-linux-amd64 -q -g -b -s hellohello -o hello.jpg 200 300
+	bin/picsum-linux-amd64 -q -g -b -s hellohello -o hello.jpg 200 300
+	bin/picsum-linux-amd64 -q -g -b -s hellohello -o hello.jpg -f 200 300
 run-i:
 	bin/picsum-linux-amd64
 	bin/picsum-linux-amd64 200 300 400

@@ -59,6 +59,11 @@ func buildFlags() []cli.Flag {
 			Aliases: []string{"o"},
 			Usage:   "output file path",
 		},
+		&cli.BoolFlag{
+			Name:    "force",
+			Aliases: []string{"f"},
+			Usage:   "overwrite existing file without prompting",
+		},
 	}
 }
 
@@ -77,6 +82,7 @@ func runAction(_ context.Context, c *cli.Command) error {
 		BlurLevel:  c.Int("blurlevel"),
 		Quiet:      c.Bool("quiet"),
 		OutputPath: c.String("output"),
+		Force:      c.Bool("force"),
 	}
 
 	if err := arguments.ValidateOptions(opts); err != nil {

@@ -20,7 +20,7 @@ func TestSaveImage_Success(t *testing.T) {
 	}
 
 	// WHEN
-	err := SaveImage(resp, tmpfile, false)
+	err := SaveImage(resp, tmpfile, false, false)
 	if err != nil {
 		t.Fatalf("SaveImage failed: %v", err)
 	}
@@ -46,7 +46,7 @@ func TestSaveImage_InvalidPath(t *testing.T) {
 	}
 
 	// WHEN
-	err := SaveImage(resp, invalidPath, false)
+	err := SaveImage(resp, invalidPath, false, false)
 	// THEN
 	if err == nil {
 		t.Error("Expected error for invalid path, got nil")
@@ -63,7 +63,7 @@ func TestSaveImage_EmptyResponse(t *testing.T) {
 	}
 
 	// WHEN
-	err := SaveImage(resp, tmpfile, false)
+	err := SaveImage(resp, tmpfile, false, false)
 	if err != nil {
 		t.Fatalf("SaveImage failed: %v", err)
 	}
@@ -100,7 +100,7 @@ func TestSaveImage_CopyError(t *testing.T) {
 	}
 
 	// WHEN
-	err := SaveImage(resp, tmpfile, false)
+	err := SaveImage(resp, tmpfile, false, false)
 	if err == nil {
 		t.Error("Expected error from io.Copy failure, got nil")
 	}
