@@ -17,7 +17,7 @@ func TestImage_Success(t *testing.T) {
 	defer server.Close()
 
 	// WHEN
-	resp, err := Image(server.URL)
+	resp, err := Image(server.URL, false)
 
 	// THEN
 	if err != nil {
@@ -39,7 +39,7 @@ func TestImage_NonOKStatus(t *testing.T) {
 	defer server.Close()
 
 	// WHEN
-	resp, err := Image(server.URL)
+	resp, err := Image(server.URL, false)
 
 	// THEN
 	if err == nil {
@@ -60,7 +60,7 @@ func TestImage_InvalidURL(t *testing.T) {
 	invalidURL := "http://invalid-host-that-does-not-exist-12345.com"
 
 	// WHEN
-	resp, err := Image(invalidURL)
+	resp, err := Image(invalidURL, false)
 
 	// THEN
 	if err == nil {
@@ -85,7 +85,7 @@ func TestImage_ServerError(t *testing.T) {
 	defer server.Close()
 
 	// WHEN
-	resp, err := Image(server.URL)
+	resp, err := Image(server.URL, false)
 
 	// THEN
 	if err == nil {

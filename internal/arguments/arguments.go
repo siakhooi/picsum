@@ -57,7 +57,7 @@ func ProcessImage(args []string, opts *Options) error {
 	}
 
 	// Download the image
-	resp, err := download.Image(url)
+	resp, err := download.Image(url, opts.Quiet)
 	if err != nil {
 		return err
 	}
