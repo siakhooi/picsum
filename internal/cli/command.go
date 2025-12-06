@@ -54,6 +54,11 @@ func buildFlags() []cli.Flag {
 			Aliases: []string{"q"},
 			Usage:   "suppress output messages",
 		},
+		&cli.StringFlag{
+			Name:    "output",
+			Aliases: []string{"o"},
+			Usage:   "output file path",
+		},
 	}
 }
 
@@ -65,12 +70,13 @@ func runAction(_ context.Context, c *cli.Command) error {
 	}
 
 	opts := &arguments.Options{
-		ImageID:   c.String("id"),
-		Seed:      c.String("seed"),
-		Grayscale: c.Bool("gray"),
-		Blur:      c.Bool("blur"),
-		BlurLevel: c.Int("blurlevel"),
-		Quiet:     c.Bool("quiet"),
+		ImageID:    c.String("id"),
+		Seed:       c.String("seed"),
+		Grayscale:  c.Bool("gray"),
+		Blur:       c.Bool("blur"),
+		BlurLevel:  c.Int("blurlevel"),
+		Quiet:      c.Bool("quiet"),
+		OutputPath: c.String("output"),
 	}
 
 	if err := arguments.ValidateOptions(opts); err != nil {

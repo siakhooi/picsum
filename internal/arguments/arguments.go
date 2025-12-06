@@ -13,12 +13,13 @@ import (
 
 // Options holds all command-line flag values
 type Options struct {
-	ImageID   string
-	Seed      string
-	Grayscale bool
-	Blur      bool
-	BlurLevel int
-	Quiet     bool
+	ImageID    string
+	Seed       string
+	Grayscale  bool
+	Blur       bool
+	BlurLevel  int
+	Quiet      bool
+	OutputPath string
 }
 
 // ValidateArguments validates the number of command-line arguments
@@ -54,6 +55,11 @@ func ProcessImage(args []string, opts *Options) error {
 	url, filename, err := urlbuilder.BuildURL(args, opts.ImageID, opts.Seed, opts.Grayscale, opts.Blur, opts.BlurLevel)
 	if err != nil {
 		return err
+	}
+
+	// Use custom output path if specified
+	if opts.OutputPath != "" {
+		filename = opts.OutputPath
 	}
 
 	// Download the image
