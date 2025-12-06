@@ -49,6 +49,11 @@ func buildFlags() []cli.Flag {
 			Aliases: []string{"B"},
 			Usage:   "apply blur effect with specific level 1-10 (supersedes -b)",
 		},
+		&cli.BoolFlag{
+			Name:    "quiet",
+			Aliases: []string{"q"},
+			Usage:   "suppress output messages",
+		},
 	}
 }
 
@@ -65,6 +70,7 @@ func runAction(_ context.Context, c *cli.Command) error {
 		Grayscale: c.Bool("gray"),
 		Blur:      c.Bool("blur"),
 		BlurLevel: c.Int("blurlevel"),
+		Quiet:     c.Bool("quiet"),
 	}
 
 	if err := arguments.ValidateOptions(opts); err != nil {

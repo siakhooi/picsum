@@ -13,7 +13,7 @@ import (
 /*
 SaveImage saves the HTTP response body to a file with the given filename
 */
-func SaveImage(resp *http.Response, filename string) error {
+func SaveImage(resp *http.Response, filename string, quiet bool) error {
 	file, err := os.Create(filename)
 	if err != nil {
 		return fmt.Errorf("failed to create file: %v", err)
@@ -25,6 +25,8 @@ func SaveImage(resp *http.Response, filename string) error {
 		return fmt.Errorf("failed to save image: %v", err)
 	}
 
-	fmt.Printf("Image saved as %s\n", filename)
+	if !quiet {
+		fmt.Printf("Image saved as %s\n", filename)
+	}
 	return nil
 }
