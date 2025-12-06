@@ -8,6 +8,27 @@ import (
 	"strconv"
 )
 
+// buildQueryParamsAndSuffix builds query parameters and filename suffix based on image options
+func buildQueryParamsAndSuffix(grayscale, blur bool, blurLevel int) (queryParams, filenameSuffix string) {
+	if grayscale && blurLevel > 0 {
+		queryParams = fmt.Sprintf("?grayscale&blur=%d", blurLevel)
+		filenameSuffix = fmt.Sprintf("_gray_blur%d", blurLevel)
+	} else if grayscale && blur {
+		queryParams = "?grayscale&blur"
+		filenameSuffix = "_gray_blur"
+	} else if grayscale {
+		queryParams = "?grayscale"
+		filenameSuffix = "_gray"
+	} else if blurLevel > 0 {
+		queryParams = fmt.Sprintf("?blur=%d", blurLevel)
+		filenameSuffix = fmt.Sprintf("_blur%d", blurLevel)
+	} else if blur {
+		queryParams = "?blur"
+		filenameSuffix = "_blur"
+	}
+	return queryParams, filenameSuffix
+}
+
 // BuildURL constructs the picsum.photos URL and filename based on arguments and options
 func BuildURL(args []string, imageID, seed string, grayscale, blur bool, blurLevel int) (url, filename string, err error) {
 	subPath := ""
@@ -44,23 +65,9 @@ func BuildURL(args []string, imageID, seed string, grayscale, blur bool, blurLev
 		filename = fmt.Sprintf("%s%dx%d", filePrefix, num1, num2)
 	}
 
-	if grayscale && blurLevel > 0 {
-		url += fmt.Sprintf("?grayscale&blur=%d", blurLevel)
-		filename += fmt.Sprintf("_gray_blur%d", blurLevel)
-	} else if grayscale && blur {
-		url += "?grayscale&blur"
-		filename += "_gray_blur"
-	} else if grayscale {
-		url += "?grayscale"
-		filename += "_gray"
-	} else if blurLevel > 0 {
-		url += fmt.Sprintf("?blur=%d", blurLevel)
-		filename += fmt.Sprintf("_blur%d", blurLevel)
-	} else if blur {
-		url += "?blur"
-		filename += "_blur"
-	}
-	filename += ".jpg"
+	queryParams, filenameSuffix := buildQueryParamsAndSuffix(grayscale, blur, blurLevel)
+	url += queryParams
+	filename += filenameSuffix + ".jpg"
 
 	return url, filename, nil
 }
