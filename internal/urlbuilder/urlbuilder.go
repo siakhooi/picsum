@@ -37,10 +37,10 @@ func BuildURL(args []string, imageID string, seed string, grayscale bool, blur b
 
 	if seed != "" {
 		subPath = fmt.Sprintf("seed/%s/", url.PathEscape(seed))
-		filePrefix = "seed_"
+		filePrefix = fmt.Sprintf("seed_%s_", seed)
 	} else if imageID != "" {
 		subPath = fmt.Sprintf("id/%s/", url.PathEscape(imageID))
-		filePrefix = "id_"
+		filePrefix = fmt.Sprintf("id_%s_", imageID)
 	}
 
 	if len(args) == 1 {

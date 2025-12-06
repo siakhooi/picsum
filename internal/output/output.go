@@ -13,6 +13,23 @@ import (
 )
 
 /*
+promptForOverwrite asks the user for confirmation to overwrite a file.
+Returns true if the user confirms, false otherwise.
+*/
+func promptForOverwrite(filename string, in io.Reader, out io.Writer) (bool, error) {
+	if _, err := fmt.Fprintf(out, "File '%s' already exists. Overwrite? [y/N]: ", filename); err != nil {
+		return false, fmt.Errorf("failed to write prompt: %v", err)
+	}
+	reader := bufio.NewReader(in)
+	response, err := reader.ReadString('\n')
+	if err != nil {
+		return false, fmt.Errorf("failed to read user input: %v", err)
+	}
+	response = strings.TrimSpace(strings.ToLower(response))
+	return response == "y" || response == "yes", nil
+}
+
+/*
 SaveImage saves the HTTP response body to a file with the given filename
 */
 func SaveImage(resp *http.Response, filename string, quiet bool, force bool) error {
@@ -20,15 +37,11 @@ func SaveImage(resp *http.Response, filename string, quiet bool, force bool) err
 	if _, err := os.Stat(filename); err == nil {
 		// File exists
 		if !force {
-			// Prompt for confirmation (default: No)
-			fmt.Printf("File '%s' already exists. Overwrite? [y/N]: ", filename)
-			reader := bufio.NewReader(os.Stdin)
-			response, err := reader.ReadString('\n')
+			shouldOverwrite, err := promptForOverwrite(filename, os.Stdin, os.Stdout)
 			if err != nil {
-				return fmt.Errorf("failed to read user input: %v", err)
+				return err
 			}
-			response = strings.TrimSpace(strings.ToLower(response))
-			if response != "y" && response != "yes" {
+			if !shouldOverwrite {
 				return fmt.Errorf("user cancelled")
 			}
 		}

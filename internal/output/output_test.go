@@ -1,6 +1,7 @@
 package output
 
 import (
+	"bytes"
 	"errors"
 	"io"
 	"net/http"
@@ -108,5 +109,181 @@ func TestSaveImage_CopyError(t *testing.T) {
 	// THEN
 	if !strings.Contains(err.Error(), "failed to save image") {
 		t.Errorf("Expected error message to contain 'failed to save image', got: %v", err)
+	}
+}
+
+func TestPromptForOverwrite_UserConfirmsWithY(t *testing.T) {
+	// GIVEN
+	filename := "test.jpg"
+	input := strings.NewReader("y\n")
+	output := &bytes.Buffer{}
+
+	// WHEN
+	result, err := promptForOverwrite(filename, input, output)
+
+	// THEN
+	if err != nil {
+		t.Fatalf("Unexpected error: %v", err)
+	}
+	if !result {
+		t.Error("Expected true when user enters 'y'")
+	}
+	expectedPrompt := "File 'test.jpg' already exists. Overwrite? [y/N]: "
+	if output.String() != expectedPrompt {
+		t.Errorf("Expected prompt %q, got %q", expectedPrompt, output.String())
+	}
+}
+
+func TestPromptForOverwrite_UserConfirmsWithYes(t *testing.T) {
+	// GIVEN
+	filename := "test.jpg"
+	input := strings.NewReader("yes\n")
+	output := &bytes.Buffer{}
+
+	// WHEN
+	result, err := promptForOverwrite(filename, input, output)
+
+	// THEN
+	if err != nil {
+		t.Fatalf("Unexpected error: %v", err)
+	}
+	if !result {
+		t.Error("Expected true when user enters 'yes'")
+	}
+}
+
+func TestPromptForOverwrite_UserConfirmsWithUppercase(t *testing.T) {
+	// GIVEN
+	filename := "test.jpg"
+	input := strings.NewReader("YES\n")
+	output := &bytes.Buffer{}
+
+	// WHEN
+	result, err := promptForOverwrite(filename, input, output)
+
+	// THEN
+	if err != nil {
+		t.Fatalf("Unexpected error: %v", err)
+	}
+	if !result {
+		t.Error("Expected true when user enters 'YES'")
+	}
+}
+
+func TestPromptForOverwrite_UserDeclinesWithN(t *testing.T) {
+	// GIVEN
+	filename := "test.jpg"
+	input := strings.NewReader("n\n")
+	output := &bytes.Buffer{}
+
+	// WHEN
+	result, err := promptForOverwrite(filename, input, output)
+
+	// THEN
+	if err != nil {
+		t.Fatalf("Unexpected error: %v", err)
+	}
+	if result {
+		t.Error("Expected false when user enters 'n'")
+	}
+}
+
+func TestPromptForOverwrite_UserDeclinesWithNo(t *testing.T) {
+	// GIVEN
+	filename := "test.jpg"
+	input := strings.NewReader("no\n")
+	output := &bytes.Buffer{}
+
+	// WHEN
+	result, err := promptForOverwrite(filename, input, output)
+
+	// THEN
+	if err != nil {
+		t.Fatalf("Unexpected error: %v", err)
+	}
+	if result {
+		t.Error("Expected false when user enters 'no'")
+	}
+}
+
+func TestPromptForOverwrite_UserDeclinesWithEmptyInput(t *testing.T) {
+	// GIVEN
+	filename := "test.jpg"
+	input := strings.NewReader("\n")
+	output := &bytes.Buffer{}
+
+	// WHEN
+	result, err := promptForOverwrite(filename, input, output)
+
+	// THEN
+	if err != nil {
+		t.Fatalf("Unexpected error: %v", err)
+	}
+	if result {
+		t.Error("Expected false (default No) when user enters empty input")
+	}
+}
+
+func TestPromptForOverwrite_UserEntersInvalidInput(t *testing.T) {
+	// GIVEN
+	filename := "test.jpg"
+	input := strings.NewReader("maybe\n")
+	output := &bytes.Buffer{}
+
+	// WHEN
+	result, err := promptForOverwrite(filename, input, output)
+
+	// THEN
+	if err != nil {
+		t.Fatalf("Unexpected error: %v", err)
+	}
+	if result {
+		t.Error("Expected false when user enters invalid input")
+	}
+}
+
+func TestPromptForOverwrite_UserEntersYesWithWhitespace(t *testing.T) {
+	// GIVEN
+	filename := "test.jpg"
+	input := strings.NewReader("  yes  \n")
+	output := &bytes.Buffer{}
+
+	// WHEN
+	result, err := promptForOverwrite(filename, input, output)
+
+	// THEN
+	if err != nil {
+		t.Fatalf("Unexpected error: %v", err)
+	}
+	if !result {
+		t.Error("Expected true when user enters 'yes' with whitespace")
+	}
+}
+
+// errorReader for testing read errors
+type inputErrorReader struct{}
+
+func (e *inputErrorReader) Read(_ []byte) (int, error) {
+	return 0, errors.New("simulated input error")
+}
+
+func TestPromptForOverwrite_ReadError(t *testing.T) {
+	// GIVEN
+	filename := "test.jpg"
+	input := &inputErrorReader{}
+	output := &bytes.Buffer{}
+
+	// WHEN
+	result, err := promptForOverwrite(filename, input, output)
+
+	// THEN
+	if err == nil {
+		t.Error("Expected error when reading fails")
+	}
+	if result {
+		t.Error("Expected false when error occurs")
+	}
+	if !strings.Contains(err.Error(), "failed to read user input") {
+		t.Errorf("Expected error message to contain 'failed to read user input', got: %v", err)
 	}
 }
