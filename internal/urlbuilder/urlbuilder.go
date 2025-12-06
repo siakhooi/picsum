@@ -5,6 +5,7 @@ package urlbuilder
 
 import (
 	"fmt"
+	"net/url"
 	"strconv"
 )
 
@@ -30,15 +31,15 @@ func buildQueryParamsAndSuffix(grayscale, blur bool, blurLevel int) (queryParams
 }
 
 // BuildURL constructs the picsum.photos URL and filename based on arguments and options
-func BuildURL(args []string, imageID, seed string, grayscale, blur bool, blurLevel int) (url, filename string, err error) {
+func BuildURL(args []string, imageID string, seed string, grayscale bool, blur bool, blurLevel int) (imageURL, filename string, err error) {
 	subPath := ""
 	filePrefix := ""
 
 	if seed != "" {
-		subPath = fmt.Sprintf("seed/%s/", seed)
+		subPath = fmt.Sprintf("seed/%s/", url.PathEscape(seed))
 		filePrefix = "seed_"
 	} else if imageID != "" {
-		subPath = fmt.Sprintf("id/%s/", imageID)
+		subPath = fmt.Sprintf("id/%s/", url.PathEscape(imageID))
 		filePrefix = "id_"
 	}
 
@@ -48,7 +49,7 @@ func BuildURL(args []string, imageID, seed string, grayscale, blur bool, blurLev
 		if err != nil {
 			return "", "", fmt.Errorf("invalid number: %s", args[0])
 		}
-		url = fmt.Sprintf("https://picsum.photos/%s%d", subPath, num1)
+		imageURL = fmt.Sprintf("https://picsum.photos/%s%d", subPath, num1)
 		filename = fmt.Sprintf("%s%d", filePrefix, num1)
 
 	} else {
@@ -61,13 +62,13 @@ func BuildURL(args []string, imageID, seed string, grayscale, blur bool, blurLev
 		if err != nil {
 			return "", "", fmt.Errorf("invalid second number: %s", args[1])
 		}
-		url = fmt.Sprintf("https://picsum.photos/%s%d/%d", subPath, num1, num2)
+		imageURL = fmt.Sprintf("https://picsum.photos/%s%d/%d", subPath, num1, num2)
 		filename = fmt.Sprintf("%s%dx%d", filePrefix, num1, num2)
 	}
 
 	queryParams, filenameSuffix := buildQueryParamsAndSuffix(grayscale, blur, blurLevel)
-	url += queryParams
+	imageURL += queryParams
 	filename += filenameSuffix + ".jpg"
 
-	return url, filename, nil
+	return imageURL, filename, nil
 }
