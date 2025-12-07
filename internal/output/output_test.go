@@ -324,21 +324,104 @@ func TestPromptForOverwrite_ReadError(t *testing.T) {
 	oldStdin := os.Stdin
 	defer func() { os.Stdin = oldStdin }()
 
-	// Mock stdin with an error reader
+	// Mock stdin with an error reader that returns a non-EOF error
+	// Close the read end to cause a read error
 	r, w, _ := os.Pipe()
+	_ = r.Close() // Close read end to cause error on read
 	os.Stdin = r
-	_ = w.Close() // Close immediately to cause EOF
+	_, _ = w.Write([]byte("y\n"))
+	_ = w.Close()
 
 	// WHEN
 	result, err := promptForOverwrite(filename)
 
 	// THEN
-	// Note: console.ReadLine() treats EOF as non-error, so it returns "" with nil error
-	// The promptForOverwrite will return false (default No) for empty input
-	if err != nil {
-		t.Fatalf("Unexpected error: %v", err)
+	// Should get an error because reading from closed pipe returns error
+	if err == nil {
+		t.Error("Expected error when reading from closed pipe")
 	}
 	if result {
-		t.Error("Expected false when EOF occurs (empty input)")
+		t.Error("Expected false when error occurs")
+	}
+	if err != nil && !strings.Contains(err.Error(), "failed to read user input") {
+		t.Errorf("Expected error message to contain 'failed to read user input', got: %v", err)
+	}
+}
+
+func TestSaveImage_FileExistsAndUserDeclines(t *testing.T) {
+	// GIVEN
+	tmpfile := "test_decline.jpg"
+	// Create an existing file
+	err := os.WriteFile(tmpfile, []byte("existing content"), 0644)
+	if err != nil {
+		t.Fatalf("Failed to create test file: %v", err)
+	}
+	defer func() { _ = os.Remove(tmpfile) }()
+
+	oldStdin := os.Stdin
+	defer func() { os.Stdin = oldStdin }()
+
+	r, w, _ := os.Pipe()
+	os.Stdin = r
+	_, _ = w.Write([]byte("n\n")) // User declines
+	_ = w.Close()
+
+	imageData := "new image data"
+	resp := &http.Response{
+		Body: io.NopCloser(strings.NewReader(imageData)),
+	}
+
+	// WHEN
+	err = SaveImage(resp, tmpfile, true, false)
+
+	// THEN
+	if err == nil {
+		t.Error("Expected error when user declines overwrite")
+	}
+	if err != nil && !strings.Contains(err.Error(), "user cancelled") {
+		t.Errorf("Expected error message to contain 'user cancelled', got: %v", err)
+	}
+
+	// Verify original file is unchanged
+	data, _ := os.ReadFile(tmpfile)
+	if string(data) != "existing content" {
+		t.Error("Original file should not be modified when user declines")
+	}
+}
+
+func TestSaveImage_FileExistsAndPromptError(t *testing.T) {
+	// GIVEN
+	tmpfile := "test_prompt_error.jpg"
+	// Create an existing file
+	err := os.WriteFile(tmpfile, []byte("existing content"), 0644)
+	if err != nil {
+		t.Fatalf("Failed to create test file: %v", err)
+	}
+	defer func() { _ = os.Remove(tmpfile) }()
+
+	oldStdin := os.Stdin
+	defer func() { os.Stdin = oldStdin }()
+
+	// Create a closed pipe to trigger read error
+	r, w, _ := os.Pipe()
+	_ = r.Close() // Close read end to cause error
+	os.Stdin = r
+	_, _ = w.Write([]byte("y\n"))
+	_ = w.Close()
+
+	imageData := "new image data"
+	resp := &http.Response{
+		Body: io.NopCloser(strings.NewReader(imageData)),
+	}
+
+	// WHEN
+	err = SaveImage(resp, tmpfile, true, false)
+
+	// THEN
+	if err == nil {
+		t.Error("Expected error when prompt fails")
+	}
+	if err != nil && !strings.Contains(err.Error(), "failed to read user input") {
+		t.Errorf("Expected error message to contain 'failed to read user input', got: %v", err)
 	}
 }
