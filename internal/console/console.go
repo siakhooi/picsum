@@ -10,21 +10,29 @@ import (
 
 // Stdout writes to standard output
 func Stdout(format string, args ...interface{}) {
+	// Errors writing to stdout are intentionally ignored as they indicate
+	// unrecoverable conditions (e.g., broken pipe, closed descriptor)
 	_, _ = fmt.Fprintf(os.Stdout, format, args...)
 }
 
 // Stdoutln writes to standard output with a newline
 func Stdoutln(format string, args ...interface{}) {
+	// Errors writing to stdout are intentionally ignored as they indicate
+	// unrecoverable conditions (e.g., broken pipe, closed descriptor)
 	_, _ = fmt.Fprintf(os.Stdout, format+"\n", args...)
 }
 
 // Stderr writes to standard error
 func Stderr(format string, args ...interface{}) {
+	// Errors writing to stderr are intentionally ignored as they indicate
+	// unrecoverable conditions (e.g., broken pipe, closed descriptor)
 	_, _ = fmt.Fprintf(os.Stderr, format, args...)
 }
 
 // Stderrln writes to standard error with a newline
 func Stderrln(format string, args ...interface{}) {
+	// Errors writing to stderr are intentionally ignored as they indicate
+	// unrecoverable conditions (e.g., broken pipe, closed descriptor)
 	_, _ = fmt.Fprintf(os.Stderr, format+"\n", args...)
 }
 
