@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	httpwrapper "github.com/siakhooi/picsum/internal/http"
+	"github.com/siakhooi/picsum/internal/httpclient"
 )
 
 func TestImage_Success(t *testing.T) {
@@ -203,7 +203,7 @@ func TestImageWithClient_DefaultClient(t *testing.T) {
 	}))
 	defer server.Close()
 
-	client := httpwrapper.NewDefaultClient()
+	client := httpclient.NewDefaultClient()
 
 	// WHEN
 	resp, err := ImageWithClient(client, server.URL, true)

@@ -1,7 +1,7 @@
 /*
-Package http provides an abstraction layer for HTTP operations
+Package httpclient provides an abstraction layer for HTTP operations
 */
-package http
+package httpclient
 
 import (
 	"net/http"
