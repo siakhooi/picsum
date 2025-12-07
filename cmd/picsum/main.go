@@ -12,8 +12,12 @@ import (
 )
 
 func main() {
-	if err := cli.BuildCommand().Run(context.Background(), os.Args); err != nil {
+	if err := run(os.Args); err != nil {
 		console.Stderrln("Error: %v", err)
 		os.Exit(1)
 	}
+}
+
+func run(args []string) error {
+	return cli.BuildCommand().Run(context.Background(), args)
 }
