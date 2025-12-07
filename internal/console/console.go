@@ -10,22 +10,26 @@ import (
 
 // Stdout writes to standard output
 func Stdout(format string, args ...interface{}) {
-	_, _ = fmt.Fprintf(os.Stdout, format, args...) // NOSONAR godre:S8148
+	//nolint:revive // Errors writing to stdout indicate unrecoverable conditions
+	_, _ = fmt.Fprintf(os.Stdout, format, args...)
 }
 
 // Stdoutln writes to standard output with a newline
 func Stdoutln(format string, args ...interface{}) {
-	_, _ = fmt.Fprintf(os.Stdout, format+"\n", args...) // NOSONAR godre:S8148
+	//nolint:revive // Errors writing to stdout indicate unrecoverable conditions
+	_, _ = fmt.Fprintf(os.Stdout, format+"\n", args...)
 }
 
 // Stderr writes to standard error
 func Stderr(format string, args ...interface{}) {
-	_, _ = fmt.Fprintf(os.Stderr, format, args...) // NOSONAR godre:S8148
+	//nolint:revive // Errors writing to stderr indicate unrecoverable conditions
+	_, _ = fmt.Fprintf(os.Stderr, format, args...)
 }
 
 // Stderrln writes to standard error with a newline
 func Stderrln(format string, args ...interface{}) {
-	_, _ = fmt.Fprintf(os.Stderr, format+"\n", args...) // NOSONAR godre:S8148
+	//nolint:revive // Errors writing to stderr indicate unrecoverable conditions
+	_, _ = fmt.Fprintf(os.Stderr, format+"\n", args...)
 }
 
 // ReadLine reads a single line from standard input
