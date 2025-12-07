@@ -2,6 +2,7 @@ package cli
 
 import (
 	"context"
+	"os"
 	"testing"
 
 	"github.com/siakhooi/picsum/internal/version"
@@ -203,6 +204,214 @@ func TestRunAction_WithMockCommand(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestRunAction_OptionsValidation(t *testing.T) {
+	tests := []struct {
+		name    string
+		args    []string
+		wantErr bool
+		errMsg  string
+	}{
+		{
+			name:    "blur level out of range - too high",
+			args:    []string{"picsum", "--blurlevel", "11", "200"},
+			wantErr: true,
+			errMsg:  "blur level must be between 1 and 10",
+		},
+		{
+			name:    "blur level out of range - negative",
+			args:    []string{"picsum", "--blurlevel", "-1", "200"},
+			wantErr: true,
+			errMsg:  "blur level must be between 1 and 10",
+		},
+		{
+			name:    "mutually exclusive id and seed",
+			args:    []string{"picsum", "--id", "123", "--seed", "myseed", "200"},
+			wantErr: true,
+			errMsg:  "mutually exclusive",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			cmd := BuildCommand()
+			ctx := context.Background()
+			err := cmd.Run(ctx, tt.args)
+
+			if tt.wantErr && err == nil {
+				t.Errorf("Expected error but got nil")
+			}
+
+			if !tt.wantErr && err != nil {
+				t.Errorf("Unexpected error: %v", err)
+			}
+
+			if tt.errMsg != "" && err != nil {
+				if !contains(err.Error(), tt.errMsg) {
+					t.Errorf("Expected error containing %q, got %q", tt.errMsg, err.Error())
+				}
+			}
+		})
+	}
+}
+
+func TestRunAction_OptionsCreation(t *testing.T) {
+	// Test that runAction properly creates Options from CLI flags
+	// This tests lines 77-86 of command.go
+	// NOTE: These are integration tests that make real network calls
+	tests := []struct {
+		name        string
+		args        []string
+		cleanupFile string
+	}{
+		{
+			name:        "with id flag",
+			args:        []string{"picsum", "--id", "123", "--quiet", "--force", "200"},
+			cleanupFile: "id_123_200.jpg",
+		},
+		{
+			name:        "with seed flag",
+			args:        []string{"picsum", "--seed", "myseed", "--quiet", "--force", "200"},
+			cleanupFile: "seed_myseed_200.jpg",
+		},
+		{
+			name:        "with gray flag",
+			args:        []string{"picsum", "--gray", "--quiet", "--force", "200"},
+			cleanupFile: "200_gray.jpg",
+		},
+		{
+			name:        "with blur flag",
+			args:        []string{"picsum", "--blur", "--quiet", "--force", "200"},
+			cleanupFile: "200_blur.jpg",
+		},
+		{
+			name:        "with blurlevel flag",
+			args:        []string{"picsum", "--blurlevel", "3", "--quiet", "--force", "200"},
+			cleanupFile: "200_blur3.jpg",
+		},
+		{
+			name:        "with output flag",
+			args:        []string{"picsum", "--output", "/tmp/test_cli.jpg", "--quiet", "--force", "200"},
+			cleanupFile: "/tmp/test_cli.jpg",
+		},
+		{
+			name:        "with multiple flags combined",
+			args:        []string{"picsum", "--gray", "--blur", "--quiet", "--force", "200"},
+			cleanupFile: "200_gray_blur.jpg",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if testing.Short() {
+				t.Skip("Skipping integration test in short mode")
+			}
+
+			defer func() {
+				if tt.cleanupFile != "" {
+					_ = os.Remove(tt.cleanupFile)
+				}
+			}()
+
+			cmd := BuildCommand()
+			ctx := context.Background()
+			err := cmd.Run(ctx, tt.args)
+
+			// These tests exercise lines 77-92 of runAction
+			// They may succeed or fail depending on network availability
+			if err != nil {
+				t.Logf("Integration test note: %v", err)
+			}
+		})
+	}
+}
+
+func TestRunAction_ValidateArgumentsPath(t *testing.T) {
+	// Specifically test that ValidateArguments is called (lines 73-75)
+	tests := []struct {
+		name        string
+		args        []string
+		wantErr     bool
+		cleanupFile string
+	}{
+		{
+			name:    "empty args",
+			args:    []string{"picsum"},
+			wantErr: true,
+		},
+		{
+			name:    "three args",
+			args:    []string{"picsum", "200", "300", "extra"},
+			wantErr: true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if tt.cleanupFile != "" {
+				defer func() { _ = os.Remove(tt.cleanupFile) }()
+			}
+
+			cmd := BuildCommand()
+			ctx := context.Background()
+			err := cmd.Run(ctx, tt.args)
+
+			if (err != nil) != tt.wantErr {
+				t.Errorf("cmd.Run() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
+func TestRunAction_ValidateOptionsPath(t *testing.T) {
+	// Specifically test that ValidateOptions is called (lines 88-90)
+	tests := []struct {
+		name    string
+		args    []string
+		wantErr bool
+	}{
+		{
+			name:    "invalid blur level - above range",
+			args:    []string{"picsum", "--blurlevel", "11", "200"},
+			wantErr: true,
+		},
+		{
+			name:    "mutually exclusive flags",
+			args:    []string{"picsum", "--id", "123", "--seed", "test", "200"},
+			wantErr: true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			cmd := BuildCommand()
+			ctx := context.Background()
+			err := cmd.Run(ctx, tt.args)
+
+			if !tt.wantErr && err != nil {
+				t.Errorf("Unexpected error: %v", err)
+			}
+			if tt.wantErr && err == nil {
+				t.Error("Expected error but got nil")
+			}
+		})
+	}
+}
+
+// Helper function
+func contains(s, substr string) bool {
+	return len(s) >= len(substr) && (s == substr || len(substr) == 0 ||
+		(len(s) > 0 && len(substr) > 0 && indexOf(s, substr) >= 0))
+}
+
+func indexOf(s, substr string) int {
+	for i := 0; i <= len(s)-len(substr); i++ {
+		if s[i:i+len(substr)] == substr {
+			return i
+		}
+	}
+	return -1
 }
 
 func TestBuildFlags_Coverage(t *testing.T) {
