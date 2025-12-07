@@ -10,30 +10,22 @@ import (
 
 // Stdout writes to standard output
 func Stdout(format string, args ...interface{}) {
-	// Errors writing to stdout are intentionally ignored as they indicate
-	// unrecoverable conditions (e.g., broken pipe, closed descriptor)
-	_, _ = fmt.Fprintf(os.Stdout, format, args...)
+	_, _ = fmt.Fprintf(os.Stdout, format, args...) // NOSONAR godre:S8148
 }
 
 // Stdoutln writes to standard output with a newline
 func Stdoutln(format string, args ...interface{}) {
-	// Errors writing to stdout are intentionally ignored as they indicate
-	// unrecoverable conditions (e.g., broken pipe, closed descriptor)
-	_, _ = fmt.Fprintf(os.Stdout, format+"\n", args...)
+	_, _ = fmt.Fprintf(os.Stdout, format+"\n", args...) // NOSONAR godre:S8148
 }
 
 // Stderr writes to standard error
 func Stderr(format string, args ...interface{}) {
-	// Errors writing to stderr are intentionally ignored as they indicate
-	// unrecoverable conditions (e.g., broken pipe, closed descriptor)
-	_, _ = fmt.Fprintf(os.Stderr, format, args...)
+	_, _ = fmt.Fprintf(os.Stderr, format, args...) // NOSONAR godre:S8148
 }
 
 // Stderrln writes to standard error with a newline
 func Stderrln(format string, args ...interface{}) {
-	// Errors writing to stderr are intentionally ignored as they indicate
-	// unrecoverable conditions (e.g., broken pipe, closed descriptor)
-	_, _ = fmt.Fprintf(os.Stderr, format+"\n", args...)
+	_, _ = fmt.Fprintf(os.Stderr, format+"\n", args...) // NOSONAR godre:S8148
 }
 
 // ReadLine reads a single line from standard input
