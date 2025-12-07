@@ -4,24 +4,22 @@ Package output to save pic file
 package output
 
 import (
-	"bufio"
 	"fmt"
 	"io"
 	"net/http"
 	"os"
 	"strings"
+
+	"github.com/siakhooi/picsum/internal/console"
 )
 
 /*
 promptForOverwrite asks the user for confirmation to overwrite a file.
 Returns true if the user confirms, false otherwise.
 */
-func promptForOverwrite(filename string, in io.Reader, out io.Writer) (bool, error) {
-	if _, err := fmt.Fprintf(out, "File '%s' already exists. Overwrite? [y/N]: ", filename); err != nil {
-		return false, fmt.Errorf("failed to write prompt: %v", err)
-	}
-	reader := bufio.NewReader(in)
-	response, err := reader.ReadString('\n')
+func promptForOverwrite(filename string) (bool, error) {
+	console.Stdout("File '%s' already exists. Overwrite? [y/N]: ", filename)
+	response, err := console.ReadLine()
 	if err != nil {
 		return false, fmt.Errorf("failed to read user input: %v", err)
 	}
@@ -37,7 +35,7 @@ func SaveImage(resp *http.Response, filename string, quiet bool, force bool) err
 	if _, err := os.Stat(filename); err == nil {
 		// File exists
 		if !force {
-			shouldOverwrite, err := promptForOverwrite(filename, os.Stdin, os.Stdout)
+			shouldOverwrite, err := promptForOverwrite(filename)
 			if err != nil {
 				return err
 			}
@@ -59,7 +57,7 @@ func SaveImage(resp *http.Response, filename string, quiet bool, force bool) err
 	}
 
 	if !quiet {
-		fmt.Printf("Image saved as %s\n", filename)
+		console.Stdoutln("Image saved as %s", filename)
 	}
 	return nil
 }

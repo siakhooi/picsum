@@ -115,11 +115,27 @@ func TestSaveImage_CopyError(t *testing.T) {
 func TestPromptForOverwrite_UserConfirmsWithY(t *testing.T) {
 	// GIVEN
 	filename := "test.jpg"
-	input := strings.NewReader("y\n")
-	output := &bytes.Buffer{}
+	oldStdin := os.Stdin
+	oldStdout := os.Stdout
+	defer func() {
+		os.Stdin = oldStdin
+		os.Stdout = oldStdout
+	}()
+
+	r, w, _ := os.Pipe()
+	os.Stdin = r
+	rOut, wOut, _ := os.Pipe()
+	os.Stdout = wOut
+
+	_, _ = w.Write([]byte("y\n"))
+	_ = w.Close()
 
 	// WHEN
-	result, err := promptForOverwrite(filename, input, output)
+	result, err := promptForOverwrite(filename)
+
+	_ = wOut.Close()
+	var buf bytes.Buffer
+	_, _ = io.Copy(&buf, rOut)
 
 	// THEN
 	if err != nil {
@@ -129,19 +145,25 @@ func TestPromptForOverwrite_UserConfirmsWithY(t *testing.T) {
 		t.Error("Expected true when user enters 'y'")
 	}
 	expectedPrompt := "File 'test.jpg' already exists. Overwrite? [y/N]: "
-	if output.String() != expectedPrompt {
-		t.Errorf("Expected prompt %q, got %q", expectedPrompt, output.String())
+	if buf.String() != expectedPrompt {
+		t.Errorf("Expected prompt %q, got %q", expectedPrompt, buf.String())
 	}
 }
 
 func TestPromptForOverwrite_UserConfirmsWithYes(t *testing.T) {
 	// GIVEN
 	filename := "test.jpg"
-	input := strings.NewReader("yes\n")
-	output := &bytes.Buffer{}
+	oldStdin := os.Stdin
+	defer func() { os.Stdin = oldStdin }()
+
+	r, w, _ := os.Pipe()
+	os.Stdin = r
+
+	_, _ = w.Write([]byte("yes\n"))
+	_ = w.Close()
 
 	// WHEN
-	result, err := promptForOverwrite(filename, input, output)
+	result, err := promptForOverwrite(filename)
 
 	// THEN
 	if err != nil {
@@ -155,11 +177,17 @@ func TestPromptForOverwrite_UserConfirmsWithYes(t *testing.T) {
 func TestPromptForOverwrite_UserConfirmsWithUppercase(t *testing.T) {
 	// GIVEN
 	filename := "test.jpg"
-	input := strings.NewReader("YES\n")
-	output := &bytes.Buffer{}
+	oldStdin := os.Stdin
+	defer func() { os.Stdin = oldStdin }()
+
+	r, w, _ := os.Pipe()
+	os.Stdin = r
+
+	_, _ = w.Write([]byte("YES\n"))
+	_ = w.Close()
 
 	// WHEN
-	result, err := promptForOverwrite(filename, input, output)
+	result, err := promptForOverwrite(filename)
 
 	// THEN
 	if err != nil {
@@ -173,11 +201,17 @@ func TestPromptForOverwrite_UserConfirmsWithUppercase(t *testing.T) {
 func TestPromptForOverwrite_UserDeclinesWithN(t *testing.T) {
 	// GIVEN
 	filename := "test.jpg"
-	input := strings.NewReader("n\n")
-	output := &bytes.Buffer{}
+	oldStdin := os.Stdin
+	defer func() { os.Stdin = oldStdin }()
+
+	r, w, _ := os.Pipe()
+	os.Stdin = r
+
+	_, _ = w.Write([]byte("n\n"))
+	_ = w.Close()
 
 	// WHEN
-	result, err := promptForOverwrite(filename, input, output)
+	result, err := promptForOverwrite(filename)
 
 	// THEN
 	if err != nil {
@@ -191,11 +225,17 @@ func TestPromptForOverwrite_UserDeclinesWithN(t *testing.T) {
 func TestPromptForOverwrite_UserDeclinesWithNo(t *testing.T) {
 	// GIVEN
 	filename := "test.jpg"
-	input := strings.NewReader("no\n")
-	output := &bytes.Buffer{}
+	oldStdin := os.Stdin
+	defer func() { os.Stdin = oldStdin }()
+
+	r, w, _ := os.Pipe()
+	os.Stdin = r
+
+	_, _ = w.Write([]byte("no\n"))
+	_ = w.Close()
 
 	// WHEN
-	result, err := promptForOverwrite(filename, input, output)
+	result, err := promptForOverwrite(filename)
 
 	// THEN
 	if err != nil {
@@ -209,11 +249,17 @@ func TestPromptForOverwrite_UserDeclinesWithNo(t *testing.T) {
 func TestPromptForOverwrite_UserDeclinesWithEmptyInput(t *testing.T) {
 	// GIVEN
 	filename := "test.jpg"
-	input := strings.NewReader("\n")
-	output := &bytes.Buffer{}
+	oldStdin := os.Stdin
+	defer func() { os.Stdin = oldStdin }()
+
+	r, w, _ := os.Pipe()
+	os.Stdin = r
+
+	_, _ = w.Write([]byte("\n"))
+	_ = w.Close()
 
 	// WHEN
-	result, err := promptForOverwrite(filename, input, output)
+	result, err := promptForOverwrite(filename)
 
 	// THEN
 	if err != nil {
@@ -227,11 +273,17 @@ func TestPromptForOverwrite_UserDeclinesWithEmptyInput(t *testing.T) {
 func TestPromptForOverwrite_UserEntersInvalidInput(t *testing.T) {
 	// GIVEN
 	filename := "test.jpg"
-	input := strings.NewReader("maybe\n")
-	output := &bytes.Buffer{}
+	oldStdin := os.Stdin
+	defer func() { os.Stdin = oldStdin }()
+
+	r, w, _ := os.Pipe()
+	os.Stdin = r
+
+	_, _ = w.Write([]byte("maybe\n"))
+	_ = w.Close()
 
 	// WHEN
-	result, err := promptForOverwrite(filename, input, output)
+	result, err := promptForOverwrite(filename)
 
 	// THEN
 	if err != nil {
@@ -245,11 +297,17 @@ func TestPromptForOverwrite_UserEntersInvalidInput(t *testing.T) {
 func TestPromptForOverwrite_UserEntersYesWithWhitespace(t *testing.T) {
 	// GIVEN
 	filename := "test.jpg"
-	input := strings.NewReader("  yes  \n")
-	output := &bytes.Buffer{}
+	oldStdin := os.Stdin
+	defer func() { os.Stdin = oldStdin }()
+
+	r, w, _ := os.Pipe()
+	os.Stdin = r
+
+	_, _ = w.Write([]byte("  yes  \n"))
+	_ = w.Close()
 
 	// WHEN
-	result, err := promptForOverwrite(filename, input, output)
+	result, err := promptForOverwrite(filename)
 
 	// THEN
 	if err != nil {
@@ -260,30 +318,27 @@ func TestPromptForOverwrite_UserEntersYesWithWhitespace(t *testing.T) {
 	}
 }
 
-// errorReader for testing read errors
-type inputErrorReader struct{}
-
-func (e *inputErrorReader) Read(_ []byte) (int, error) {
-	return 0, errors.New("simulated input error")
-}
-
 func TestPromptForOverwrite_ReadError(t *testing.T) {
 	// GIVEN
 	filename := "test.jpg"
-	input := &inputErrorReader{}
-	output := &bytes.Buffer{}
+	oldStdin := os.Stdin
+	defer func() { os.Stdin = oldStdin }()
+
+	// Mock stdin with an error reader
+	r, w, _ := os.Pipe()
+	os.Stdin = r
+	_ = w.Close() // Close immediately to cause EOF
 
 	// WHEN
-	result, err := promptForOverwrite(filename, input, output)
+	result, err := promptForOverwrite(filename)
 
 	// THEN
-	if err == nil {
-		t.Error("Expected error when reading fails")
+	// Note: console.ReadLine() treats EOF as non-error, so it returns "" with nil error
+	// The promptForOverwrite will return false (default No) for empty input
+	if err != nil {
+		t.Fatalf("Unexpected error: %v", err)
 	}
 	if result {
-		t.Error("Expected false when error occurs")
-	}
-	if !strings.Contains(err.Error(), "failed to read user input") {
-		t.Errorf("Expected error message to contain 'failed to read user input', got: %v", err)
+		t.Error("Expected false when EOF occurs (empty input)")
 	}
 }

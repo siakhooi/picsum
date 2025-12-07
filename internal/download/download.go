@@ -6,6 +6,8 @@ package download
 import (
 	"fmt"
 	"net/http"
+
+	"github.com/siakhooi/picsum/internal/console"
 )
 
 /*
@@ -13,7 +15,7 @@ Image downloads an image from the given URL and returns the HTTP response
 */
 func Image(url string, quiet bool) (*http.Response, error) {
 	if !quiet {
-		fmt.Printf("Downloading from %s...\n", url)
+		console.Stdoutln("Downloading from %s...", url)
 	}
 	resp, err := http.Get(url)
 	if err != nil {
