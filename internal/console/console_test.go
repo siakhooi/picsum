@@ -134,6 +134,24 @@ func TestReadAll(t *testing.T) {
 	}
 }
 
+func TestReadAll_Error(t *testing.T) {
+	// Mock stdin with a reader that returns an error
+	old := os.Stdin
+	r, w, _ := os.Pipe()
+	os.Stdin = r
+
+	// Close the write end and the read end to simulate a read error
+	_ = w.Close()
+	_ = r.Close()
+
+	_, err := ReadAll()
+	os.Stdin = old
+
+	if err == nil {
+		t.Error("ReadAll() expected error, got nil")
+	}
+}
+
 func TestScanner(t *testing.T) {
 	// Mock stdin
 	old := os.Stdin
