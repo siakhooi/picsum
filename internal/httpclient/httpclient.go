@@ -7,12 +7,12 @@ import (
 	"net/http"
 )
 
-// Client interface defines HTTP operations
-type Client interface {
+// Getter interface defines HTTP operations
+type Getter interface {
 	Get(url string) (*http.Response, error)
 }
 
-// DefaultClient implements Client using the standard http package
+// DefaultClient implements Getter using the standard http package
 type DefaultClient struct{}
 
 // Get performs an HTTP GET request using http.Get
@@ -21,6 +21,6 @@ func (c *DefaultClient) Get(url string) (*http.Response, error) {
 }
 
 // NewDefaultClient creates a new DefaultClient instance
-func NewDefaultClient() Client {
+func NewDefaultClient() Getter {
 	return &DefaultClient{}
 }

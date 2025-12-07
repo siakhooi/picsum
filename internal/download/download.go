@@ -14,7 +14,7 @@ import (
 /*
 ImageWithClient downloads an image from the given URL using the provided HTTP client
 */
-func ImageWithClient(client httpclient.Client, url string, quiet bool) (*http.Response, error) {
+func ImageWithClient(client httpclient.Getter, url string, quiet bool) (*http.Response, error) {
 	if !quiet {
 		console.Stdoutln("Downloading from %s...", url)
 	}
