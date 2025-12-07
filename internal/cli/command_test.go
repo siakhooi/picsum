@@ -260,6 +260,13 @@ func TestRunAction_OptionsCreation(t *testing.T) {
 	// Test that runAction properly creates Options from CLI flags
 	// This tests lines 77-86 of command.go
 	// NOTE: These are integration tests that make real network calls
+	//
+	// TO MOCK NETWORK CALLS:
+	// The download.ImageWithClient function can be used with a mock HTTP client.
+	// See internal/download/download_test.go for examples of using MockHTTPClient.
+	// To refactor these tests for mocking, you would need to:
+	// 1. Modify arguments.ProcessImage to accept an http.Client parameter
+	// 2. Inject a mock client in tests instead of using the default client
 	tests := []struct {
 		name        string
 		args        []string
