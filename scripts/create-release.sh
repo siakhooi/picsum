@@ -6,5 +6,6 @@ set -e
 
 RELEASE_NOTE="$RELEASE_TITLE"
 
+go_tag="v${RELEASE_VERSION}"
 set -x
-gh release create "$RELEASE_VERSION" --title "$RELEASE_TITLE" --notes "${RELEASE_NOTE}" --latest
+gh release create "$go_tag" --title "$RELEASE_TITLE" --notes "${RELEASE_NOTE}" --latest
