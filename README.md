@@ -3,11 +3,13 @@
 fetch photo from https://picsum.photos
 
 ## Installation
+
 ```
 go install github.com/siakhooi/picsum/cmd/picsum@latest
 ```
 
 ## Usage
+
 ```
 NAME:
    picsum - fetch photo from https://picsum.photos
@@ -31,6 +33,10 @@ GLOBAL OPTIONS:
 
 - https://sonarcloud.io/project/overview?id=siakhooi_picsum
 - https://qlty.sh/gh/siakhooi/projects/picsum
+
+## Deliverables
+
+- https://pkg.go.dev/github.com/siakhooi/picsum
 
 ## Badges
 
