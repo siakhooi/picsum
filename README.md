@@ -18,15 +18,19 @@ USAGE:
    picsum [global options]
 
 VERSION:
-   0.5.0
+   1.0.0
 
 GLOBAL OPTIONS:
-   --id string, -i string    specific image ID from picsum.photos
-   --seed string, -s string  seed for random image generation from picsum.photos
-   --gray, -g                convert image to grayscale
-   --blur, -b                apply blur effect to image
-   --help, -h                show help
-   --version, -v             print the version
+   --id string, -i string      specific image ID from picsum.photos
+   --seed string, -s string    seed for random image generation from picsum.photos
+   --gray, -g                  convert image to grayscale
+   --blur, -b                  apply blur effect to image
+   --blurlevel int, -B int     apply blur effect with specific level 1-10 (supersedes -b) (default: 0)
+   --quiet, -q                 suppress output messages
+   --output string, -o string  output file path
+   --force, -f                 overwrite existing file without prompting
+   --help, -h                  show help
+   --version, -v               print the version
 ```
 
 ## Quality
