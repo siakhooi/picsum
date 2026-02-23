@@ -7,7 +7,7 @@ import (
 	"context"
 
 	"github.com/siakhooi/picsum/internal/arguments"
-	"github.com/siakhooi/picsum/internal/version"
+	"github.com/siakhooi/picsum/internal/versioninfo"
 	"github.com/urfave/cli/v3"
 )
 
@@ -16,7 +16,7 @@ func BuildCommand() *cli.Command {
 	return &cli.Command{
 		Name:    "picsum",
 		Usage:   "fetch photo from https://picsum.photos",
-		Version: version.Version(),
+		Version: versioninfo.Version(),
 		Flags:   buildFlags(),
 		Action:  runAction,
 	}

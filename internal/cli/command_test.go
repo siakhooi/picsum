@@ -5,7 +5,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/siakhooi/picsum/internal/version"
+	"github.com/siakhooi/picsum/internal/versioninfo"
 	"github.com/urfave/cli/v3"
 )
 
@@ -25,7 +25,7 @@ func TestBuildCommand(t *testing.T) {
 		t.Errorf("BuildCommand() Usage = %v, want %v", cmd.Usage, expectedUsage)
 	}
 
-	expectedVersion := version.Version()
+	expectedVersion := versioninfo.Version()
 	if cmd.Version != expectedVersion {
 		t.Errorf("BuildCommand() Version = %v, want %v", cmd.Version, expectedVersion)
 	}
