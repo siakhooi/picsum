@@ -4,9 +4,12 @@ fetch photo from https://picsum.photos
 
 ## Installation
 
-```
-go install github.com/siakhooi/picsum/cmd/picsum@latest
-```
+To install `picsum`, visit the [Release page](https://github.com/siakhooi/picsum/releases) and download the appropriate binary for your operating system and architecture.
+
+1. Go to the [Release page](https://github.com/siakhooi/picsum/releases).
+2. Find the latest release and download the binary matching your OS and CPU architecture.
+3. Extract the downloaded file and move the binary to a directory in your `$PATH` (e.g., `/usr/local/bin`).
+4. Verify installation by running `picsum --version`.
 
 ## Usage
 
