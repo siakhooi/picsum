@@ -3,11 +3,11 @@ Package versioninfo return version
 */
 package versioninfo
 
-const picSumVersion = "1.0.0"
-
-/*
-Version return version
-*/
-func Version() string {
-	return picSumVersion
-}
+var (
+	// Version holds the version string of the application.
+	Version = "0.0.0"
+	// Date holds the build date of the application.
+	Date = "unknown"
+	// Commit holds the git commit hash of the application.
+	Commit = "unknown"
+)

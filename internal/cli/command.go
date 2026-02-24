@@ -16,7 +16,7 @@ func BuildCommand() *cli.Command {
 	return &cli.Command{
 		Name:    "picsum",
 		Usage:   "fetch photo from https://picsum.photos",
-		Version: versioninfo.Version(),
+		Version: versioninfo.Version,
 		Flags:   buildFlags(),
 		Action:  runAction,
 	}

@@ -15,6 +15,12 @@ builds:
       - linux
       - windows
       - darwin
+    ldflags:
+      - "-s"
+      - "-w"
+      - "-X github.com/siakhooi/picsum/internal/versioninfo.Version={{.Version}}"
+      - "-X github.com/siakhooi/picsum/internal/versioninfo.Date={{.Date}}"
+      - "-X github.com/siakhooi/picsum/internal/versioninfo.Commit={{.Commit}}"
 
 archives:
   - formats: [tar.gz]

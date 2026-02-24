@@ -3,12 +3,20 @@
 program=picsum
 source=./cmd/picsum
 
+# shellcheck disable=SC1091
+. ./release.env
+
+build_date=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+git_commit=$(git rev-parse HEAD)
+
 build(){
   local GOOS=$1
   local GOARCH=$2
   local extension=$3
   echo "Building for $GOOS/$GOARCH"
-  go build -o bin/"${program}-${GOOS}-${GOARCH}${extension}" $source
+  go build \
+  -ldflags "-X github.com/siakhooi/picsum/internal/versioninfo.Version=$RELEASE_VERSION -X github.com/siakhooi/picsum/internal/versioninfo.Date=$build_date -X github.com/siakhooi/picsum/internal/versioninfo.Commit=$git_commit" \
+  -o bin/"${program}-${GOOS}-${GOARCH}${extension}" $source
 }
 
 build linux amd64 ""
