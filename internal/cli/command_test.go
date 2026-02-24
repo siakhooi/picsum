@@ -32,16 +32,16 @@ func TestBuildCommand(t *testing.T) {
 		t.Fatal("BuildCommand() Flags is nil")
 	}
 
-	if len(cmd.Flags) != 8 {
-		t.Errorf("BuildCommand() Flags length = %v, want %v", len(cmd.Flags), 8)
+	if len(cmd.Flags) != 9 {
+		t.Errorf("BuildCommand() Flags length = %v, want %v", len(cmd.Flags), 9)
 	}
 }
 
 func TestBuildFlags(t *testing.T) {
 	flags := buildFlags()
 
-	if len(flags) != 8 {
-		t.Errorf("buildFlags() returned %d flags, want 8", len(flags))
+	if len(flags) != 9 {
+		t.Errorf("buildFlags() returned %d flags, want 9", len(flags))
 	}
 
 	tests := []struct {
@@ -106,6 +106,13 @@ func TestBuildFlags(t *testing.T) {
 			flagType:    "*cli.BoolFlag",
 			aliases:     []string{"f"},
 			description: "overwrite existing file without prompting",
+		},
+		{
+			name:        "build flag",
+			flagName:    "build",
+			flagType:    "*cli.BoolFlag",
+			aliases:     []string{},
+			description: "print build info and exit",
 		},
 	}
 
@@ -428,6 +435,7 @@ func TestBuildFlags_Coverage(t *testing.T) {
 		"quiet":     false,
 		"output":    false,
 		"force":     false,
+		"build":     false,
 	}
 
 	for _, flag := range flags {
@@ -474,7 +482,7 @@ func TestBuildFlags_StringFlagDefaults(t *testing.T) {
 func TestBuildFlags_BoolFlagDefaults(t *testing.T) {
 	flags := buildFlags()
 
-	boolFlags := []string{"gray", "blur", "quiet", "force"}
+	boolFlags := []string{"gray", "blur", "quiet", "force", "build"}
 	for _, flagName := range boolFlags {
 		found := false
 		for _, flag := range flags {
@@ -557,6 +565,7 @@ func TestBuildFlags_AllAliases(t *testing.T) {
 		"quiet":     {"q"},
 		"output":    {"o"},
 		"force":     {"f"},
+		"build":     {},
 	}
 
 	for _, flag := range flags {
@@ -610,5 +619,32 @@ func TestBuildFlags_EachFlagHasUsage(t *testing.T) {
 		if usage == "" {
 			t.Errorf("Flag %q has empty usage text", mainName)
 		}
+	}
+}
+
+// Test --build flag prints build info and exits
+func TestRunAction_BuildFlag(t *testing.T) {
+	cmd := BuildCommand()
+	ctx := context.Background()
+	// Capture stdout
+	r, w, _ := os.Pipe()
+	origStdout := os.Stdout
+	os.Stdout = w
+	defer func() { os.Stdout = origStdout }()
+
+	args := []string{"picsum", "--build"}
+	err := cmd.Run(ctx, args)
+	if cerr := w.Close(); cerr != nil {
+		t.Errorf("Error closing write pipe: %v", cerr)
+	}
+	var outBuf [256]byte
+	n, _ := r.Read(outBuf[:])
+	output := string(outBuf[:n])
+
+	if err != nil {
+		t.Errorf("Expected no error for --build, got %v", err)
+	}
+	if len(output) == 0 || !contains(output, "Version:") || !contains(output, "Commit:") || !contains(output, "BuildDate:") {
+		t.Errorf("Expected build info output, got: %q", output)
 	}
 }

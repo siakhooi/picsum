@@ -21,8 +21,11 @@ commit-watch: commit
 release-watch: release
 	gh run watch
 
-run:
+run-help:
 	bin/picsum-linux-amd64 -h
+run-build:
+	bin/picsum-linux-amd64 --build
+run:
 	bin/picsum-linux-amd64 200
 	bin/picsum-linux-amd64 -q 200 300
 	bin/picsum-linux-amd64 -g 200 300

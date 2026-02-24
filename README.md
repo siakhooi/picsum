@@ -32,6 +32,7 @@ GLOBAL OPTIONS:
    --quiet, -q                 suppress output messages
    --output string, -o string  output file path
    --force, -f                 overwrite existing file without prompting
+   --build                     print build info and exit
    --help, -h                  show help
    --version, -v               print the version
 ```

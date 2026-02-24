@@ -64,10 +64,19 @@ func buildFlags() []cli.Flag {
 			Aliases: []string{"f"},
 			Usage:   "overwrite existing file without prompting",
 		},
+		&cli.BoolFlag{
+			Name:  "build",
+			Usage: "print build info and exit",
+		},
 	}
 }
 
 func runAction(_ context.Context, c *cli.Command) error {
+	if c.Bool("build") {
+		versioninfo.PrintBuildInfo()
+		return nil
+	}
+
 	args := c.Args().Slice()
 
 	if err := arguments.ValidateArguments(args); err != nil {
