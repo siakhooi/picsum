@@ -37,3 +37,11 @@ jobs:
           args: release --clean
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN_TO_UPLOAD_ASSETS }}
+
+      - run: ./.github/bin/deploy-to-siakhooi-apt.sh
+        env:
+          PUBLISH_TO_GITHUB_REPO_TOKEN: ${{ secrets.PUBLISH_TO_GITHUB_REPO_TOKEN }}
+
+      - run: ./.github/bin/deploy-to-siakhooi-rpms.sh
+        env:
+          PUBLISH_TO_GITHUB_REPO_TOKEN: ${{ secrets.PUBLISH_TO_GITHUB_REPO_TOKEN }}

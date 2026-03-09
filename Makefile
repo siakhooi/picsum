@@ -3,6 +3,8 @@ clean:
 build:
 	scripts/build.sh
 	goreleaser build --snapshot --clean
+go-release:
+	goreleaser release --snapshot --clean
 test:
 	scripts/test.sh
 golangci-lint:

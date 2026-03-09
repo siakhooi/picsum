@@ -4,12 +4,34 @@ fetch photo from https://picsum.photos
 
 ## Installation
 
+### Download Binaries
+
 To install `picsum`, visit the [Release page](https://github.com/siakhooi/picsum/releases) and download the appropriate binary for your operating system and architecture.
 
 1. Go to the [Release page](https://github.com/siakhooi/picsum/releases).
 2. Find the latest release and download the binary matching your OS and CPU architecture.
 3. Extract the downloaded file and move the binary to a directory in your `$PATH` (e.g., `/usr/local/bin`).
 4. Verify installation by running `picsum --version`.
+
+### Ubuntu/Debian
+
+```bash
+$ sudo curl -L https://siakhooi.github.io/apt/siakhooi-apt.list | sudo tee /etc/apt/sources.list.d/siakhooi-apt.list > /dev/null
+$ sudo curl -L https://siakhooi.github.io/apt/siakhooi-apt.gpg  | sudo tee /usr/share/keyrings/siakhooi-apt.gpg > /dev/null
+$ sudo apt update
+
+$ sudo apt install siakhooi-json2table
+```
+
+### Fedora/Red Hat
+
+```bash
+$ sudo curl -L https://siakhooi.github.io/rpms/siakhooi-rpms.repo | sudo tee /etc/yum.repos.d/siakhooi-rpms.repo > /dev/null
+
+$ sudo dnf install siakhooi-json2table
+# or
+$ sudo yum install siakhooi-json2table
+```
 
 ## Usage
 

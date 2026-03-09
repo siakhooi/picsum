@@ -38,6 +38,19 @@ archives:
       - goos: windows
         formats: [zip]
 
+nfpms:
+  - package_name: siakhooi-picsum
+    file_name_template: "{{ .ConventionalFileName }}"
+    vendor: siakhooi
+    homepage: https://github.com/siakhooi/picsum
+    maintainer: siakhooi
+    description: fetch photo from https://picsum.photos
+    license: MIT
+    bindir: /usr/bin
+    formats:
+      - deb
+      - rpm
+
 changelog:
   sort: asc
   filters:
