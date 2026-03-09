@@ -20,7 +20,7 @@ $ sudo curl -L https://siakhooi.github.io/apt/siakhooi-apt.list | sudo tee /etc/
 $ sudo curl -L https://siakhooi.github.io/apt/siakhooi-apt.gpg  | sudo tee /usr/share/keyrings/siakhooi-apt.gpg > /dev/null
 $ sudo apt update
 
-$ sudo apt install siakhooi-json2table
+$ sudo apt install siakhooi-picsum
 ```
 
 ### Fedora/Red Hat
@@ -28,9 +28,9 @@ $ sudo apt install siakhooi-json2table
 ```bash
 $ sudo curl -L https://siakhooi.github.io/rpms/siakhooi-rpms.repo | sudo tee /etc/yum.repos.d/siakhooi-rpms.repo > /dev/null
 
-$ sudo dnf install siakhooi-json2table
+$ sudo dnf install siakhooi-picsum
 # or
-$ sudo yum install siakhooi-json2table
+$ sudo yum install siakhooi-picsum
 ```
 
 ## Usage
