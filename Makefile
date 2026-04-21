@@ -11,9 +11,6 @@ golangci-lint:
 	golangci-lint run
 all: clean test golangci-lint build
 
-commit:
-	scripts/git-commit-and-push.sh
-
 release:
 	scripts/create-release.sh
 
