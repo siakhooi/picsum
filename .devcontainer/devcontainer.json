@@ -1,6 +1,6 @@
 {
 	"name": "GO 1.26 Development Dev Container",
-	"image": "siakhooi/devcontainer:go126",
+	"image": "siakhooi/devcontainer:go126_2604",
 	"remoteUser": "maui",
 	"containerUser": "maui",
 	"updateRemoteUserUID": true,
@@ -8,14 +8,11 @@
 	"customizations": {
 		"vscode": {
 			"extensions": [
-				"github.copilot",
-				"github.copilot-chat",
 				"lfm.vscode-makefile-term",
 				"golang.go",
 				"humao.rest-client",
 				"ms-vscode.live-server",
-				"redhat.vscode-yaml",
-				"github.vscode-github-actions"
+				"redhat.vscode-yaml"
 			]
 		}
 	},

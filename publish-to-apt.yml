@@ -5,5 +5,5 @@ git_commit_email: picsum@siakhooi.github.io
 git_commit_message: "picsum: Auto deploy"
 
 files:
-  - source: dist/siakhooi-picsum_1.2.0_amd64.deb
-    target: docs/pool/main/binary-amd64/siakhooi-picsum_1.2.0_amd64.deb
+  - source: dist/siakhooi-picsum_*_amd64.deb
+    target: docs/pool/main/binary-amd64/
