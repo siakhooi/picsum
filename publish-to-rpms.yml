@@ -7,3 +7,4 @@ git_commit_message: "picsum: Auto deploy"
 files:
   - source: dist/siakhooi-picsum-*.x86_64.rpm
     target: docs/
+    items: 1

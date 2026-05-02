@@ -7,3 +7,4 @@ git_commit_message: "picsum: Auto deploy"
 files:
   - source: dist/siakhooi-picsum_*_amd64.deb
     target: docs/pool/main/binary-amd64/
+    items: 1
