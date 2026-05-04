@@ -38,12 +38,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN_TO_UPLOAD_ASSETS }}
 
-      - uses: siakhooi/publish-to-repo-action@6ce345afda3f84e3521ffb20f968db64186b3789 # v0.4.0
+      - uses: siakhooi/publish-to-repo-action@b77be1a441a17461b0ebe7796afa96f903c9ee5c # v0.5.0
         with:
           token: ${{ secrets.PUBLISH_TO_GITHUB_REPO_TOKEN }}
           config-file: publish-to-apt.yml
 
-      - uses: siakhooi/publish-to-repo-action@6ce345afda3f84e3521ffb20f968db64186b3789 # v0.4.0
+      - uses: siakhooi/publish-to-repo-action@b77be1a441a17461b0ebe7796afa96f903c9ee5c # v0.5.0
         with:
           token: ${{ secrets.PUBLISH_TO_GITHUB_REPO_TOKEN }}
           config-file: publish-to-rpms.yml
