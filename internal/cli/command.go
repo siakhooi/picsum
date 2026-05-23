@@ -14,11 +14,16 @@ import (
 // BuildCommand creates and configures the CLI command
 func BuildCommand() *cli.Command {
 	return &cli.Command{
-		Name:    "picsum",
-		Usage:   "fetch photo from https://picsum.photos",
-		Version: versioninfo.Version,
-		Flags:   buildFlags(),
-		Action:  runAction,
+		Name:      "picsum",
+		Usage:     "fetch photo from https://picsum.photos",
+		Version:   versioninfo.Version,
+		ArgsUsage: "<size> | <width> <height>",
+		Description: "Fetch a photo from https://picsum.photos.\n" +
+			"Requires 1 or 2 positional arguments:\n" +
+			"  picsum <size>             square image of <size> pixels\n" +
+			"  picsum <width> <height>   image of <width> x <height> pixels",
+		Flags:  buildFlags(),
+		Action: runAction,
 	}
 }
 
