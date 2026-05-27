@@ -2,7 +2,7 @@ repo: siakhooi/apt
 branch: main
 git_commit_user: picsum
 git_commit_email: picsum@siakhooi.github.io
-git_commit_message: "picsum: Auto deploy"
+git_commit_message: "{repo_name}: {ref_name} | {commit_short}"
 
 files:
   - source: dist/siakhooi-picsum_*_amd64.deb
