@@ -2,6 +2,41 @@
 
 fetch photo from https://picsum.photos
 
+## Usage
+
+```
+NAME:
+   picsum - fetch photo from https://picsum.photos
+
+USAGE:
+   picsum [global options]
+
+VERSION:
+   1.0.0
+
+GLOBAL OPTIONS:
+   --id string, -i string      specific image ID from picsum.photos
+   --seed string, -s string    seed for random image generation from picsum.photos
+   --gray, -g                  convert image to grayscale
+   --blur, -b                  apply blur effect to image
+   --blurlevel int, -B int     apply blur effect with specific level 1-10 (supersedes -b) (default: 0)
+   --quiet, -q                 suppress output messages
+   --output string, -o string  output file path
+   --force, -f                 overwrite existing file without prompting
+   --build                     print build info and exit
+   --help, -h                  show help
+   --version, -v               print the version
+```
+
+### Examples
+
+```bash
+$ picsum 200
+$ picsum 200 300
+```
+
+`picsum 200` fetches a square 200×200 image. `picsum 200 300` fetches a 200×300 (width × height) image.
+
 ## Installation
 
 ### Download Binaries
@@ -33,31 +68,15 @@ $ sudo dnf install siakhooi-picsum
 $ sudo yum install siakhooi-picsum
 ```
 
-## Usage
+### Windows (winget)
 
+Install [Windows Package Manager (winget)](https://learn.microsoft.com/en-us/windows/package-manager/winget/) if it is not already available (it ships with recent Windows 10 and Windows 11 via App Installer). Then run:
+
+```powershell
+winget install -e --id SiakHooi.Picsum
 ```
-NAME:
-   picsum - fetch photo from https://picsum.photos
 
-USAGE:
-   picsum [global options]
-
-VERSION:
-   1.0.0
-
-GLOBAL OPTIONS:
-   --id string, -i string      specific image ID from picsum.photos
-   --seed string, -s string    seed for random image generation from picsum.photos
-   --gray, -g                  convert image to grayscale
-   --blur, -b                  apply blur effect to image
-   --blurlevel int, -B int     apply blur effect with specific level 1-10 (supersedes -b) (default: 0)
-   --quiet, -q                 suppress output messages
-   --output string, -o string  output file path
-   --force, -f                 overwrite existing file without prompting
-   --build                     print build info and exit
-   --help, -h                  show help
-   --version, -v               print the version
-```
+Verify installation with `picsum --version`.
 
 ## Quality
 
@@ -114,6 +133,5 @@ GLOBAL OPTIONS:
 ![Sonar Violations (short format)](https://img.shields.io/sonar/info_violations/siakhooi_picsum?server=https%3A%2F%2Fsonarcloud.io)
 ![Sonar Violations (long format)](https://img.shields.io/sonar/violations/siakhooi_picsum?format=long&server=http%3A%2F%2Fsonarcloud.io)
 
-[![Generic badge](https://img.shields.io/badge/Funding-BuyMeACoffee-33cb56.svg)](https://www.buymeacoffee.com/siakhooi)
-[![Generic badge](https://img.shields.io/badge/Funding-Ko%20Fi-33cb56.svg)](https://ko-fi.com/siakhooi)
+[![Wise](https://img.shields.io/badge/Funding-Wise-33cb56.svg?logo=wise)](https://wise.com/pay/me/siakn3)
 ![visitors](https://hit-tztugwlsja-uc.a.run.app/?outputtype=badge&counter=ghmd-picsum)
