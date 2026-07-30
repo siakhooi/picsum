@@ -11,6 +11,17 @@ brew install picsum
 
 Verify with `picsum --version`.
 
+## Scoop (windows)
+
+[Scoop](https://scoop.sh/) must be installed. Then run:
+
+```bash
+scoop bucket add siakhooi https://github.com/siakhooi/scoop-bucket.git
+scoop install picsum
+```
+
+Verify with `picsum --version`.
+
 ## Download binaries
 
 To install `picsum` manually, visit the [Release page](https://github.com/siakhooi/picsum/releases) and download the appropriate binary for your operating system and architecture.
