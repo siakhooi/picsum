@@ -39,7 +39,7 @@ $ picsum 200 300
 
 ## Installation
 
-See [Installation.md](Installation.md) for Homebrew, Linux packages, Windows winget, and manual binary installs.
+See [Installation.md](Installation.md) for Homebrew, Scoop, Linux packages, Windows winget, and manual binary installs.
 
 ## Quality
 
