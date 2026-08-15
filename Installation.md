@@ -60,3 +60,10 @@ winget install -e --id SiakHooi.Picsum
 ```
 
 Verify installation with `picsum --version`.
+
+## Build
+
+To build from source
+```
+go install github.com/siakhooi/picsum/cmd/picsum@latest
+```
