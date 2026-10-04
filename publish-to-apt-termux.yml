@@ -1,0 +1,10 @@
+repo: siakhooi/apt-termux
+branch: main
+git_commit_user: picsum
+git_commit_email: picsum@siakhooi.github.io
+git_commit_message: "{repo_name}: {ref_name} | {commit_short}"
+
+files:
+  - source: dist/siakhooi-picsum_*_aarch64.termux.deb
+    target: docs/pool/main/siakhooi-picsum/
+    items: 1

@@ -15,6 +15,13 @@ builds:
       - linux
       - windows
       - darwin
+      - android
+    # android/amd64 and android/386 need cgo. arm64 cross-compiles with CGO_ENABLED=0.
+    ignore:
+      - goos: android
+        goarch: amd64
+      - goos: android
+        goarch: "386"
     ldflags:
       - "-s"
       - "-w"
@@ -50,6 +57,17 @@ nfpms:
     formats:
       - deb
       - rpm
+  - id: termux
+    package_name: siakhooi-picsum
+    file_name_template: '{{ trimsuffix .ConventionalFileName ".deb" }}.termux.deb'
+    vendor: siakhooi
+    homepage: https://github.com/siakhooi/picsum
+    maintainer: siakhooi
+    description: fetch photo from https://picsum.photos
+    license: MIT
+    bindir: /usr/bin
+    formats:
+      - termux.deb
 
 changelog:
   sort: asc
