@@ -186,6 +186,14 @@ func TestRunAction_WithMockCommand(t *testing.T) {
 			wantErr: false,
 		},
 		{
+			name: "flag without size should error",
+			setupFn: func() *cli.Command {
+				return BuildCommand()
+			},
+			args:    []string{"picsum", "--gray"},
+			wantErr: true,
+		},
+		{
 			name: "too many arguments should error",
 			setupFn: func() *cli.Command {
 				return BuildCommand()
