@@ -9,6 +9,7 @@
 		"vscode": {
 			"extensions": [
 				"lfm.vscode-makefile-term",
+				"nefrob.vscode-just",
 				"golang.go",
 				"humao.rest-client",
 				"ms-vscode.live-server",
