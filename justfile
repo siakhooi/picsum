@@ -6,29 +6,33 @@ default:
 clean:
     rm -rf bin dist *.jpg
 
-# Cross-compile binaries and build a GoReleaser snapshot
-build:
-    scripts/build.sh
-    goreleaser build --snapshot --clean
-
-# Build a local GoReleaser snapshot release
-go-release:
-    goreleaser release --snapshot --clean
+# Run golangci-lint
+golangci-lint:
+    golangci-lint run
 
 # Run tests and write coverage reports
 test:
     scripts/test.sh
 
-# Run golangci-lint
-golangci-lint:
-    golangci-lint run
+# Lint and test
+ci:
+    scripts/ci.sh
 
-# Clean, test, lint, and build
-all: clean test golangci-lint build
+# Cross-compile into bin/ and build snapshot archives, debs, and rpms into dist/
+build:
+    scripts/build.sh
+    scripts/goreleaser.sh snapshot
+
+# Clean, lint, test, and build
+all: clean ci build
 
 # Create a GitHub release from release.env
 release:
     scripts/create-release.sh
+
+# Build snapshot archives, debs, and rpms in dist/ without uploading
+go-release:
+    scripts/goreleaser.sh snapshot
 
 # Watch the current GitHub Actions run
 commit-watch:
