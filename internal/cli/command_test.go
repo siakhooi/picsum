@@ -178,12 +178,12 @@ func TestRunAction_WithMockCommand(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "no arguments should error",
+			name: "no arguments should show help",
 			setupFn: func() *cli.Command {
 				return BuildCommand()
 			},
 			args:    []string{"picsum"},
-			wantErr: true,
+			wantErr: false,
 		},
 		{
 			name: "too many arguments should error",
@@ -336,7 +336,7 @@ func TestRunAction_OptionsCreation(t *testing.T) {
 }
 
 func TestRunAction_ValidateArgumentsPath(t *testing.T) {
-	// Specifically test that ValidateArguments is called (lines 73-75)
+	// No arguments prints help. Other invalid argument counts still error.
 	tests := []struct {
 		name        string
 		args        []string
@@ -346,7 +346,7 @@ func TestRunAction_ValidateArgumentsPath(t *testing.T) {
 		{
 			name:    "empty args",
 			args:    []string{"picsum"},
-			wantErr: true,
+			wantErr: false,
 		},
 		{
 			name:    "three args",

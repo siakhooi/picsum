@@ -76,6 +76,15 @@ func buildFlags() []cli.Flag {
 	}
 }
 
+func anyFlagSet(c *cli.Command) bool {
+	for _, name := range c.FlagNames() {
+		if c.IsSet(name) {
+			return true
+		}
+	}
+	return false
+}
+
 func runAction(_ context.Context, c *cli.Command) error {
 	if c.Bool("build") {
 		versioninfo.PrintBuildInfo()
@@ -83,6 +92,10 @@ func runAction(_ context.Context, c *cli.Command) error {
 	}
 
 	args := c.Args().Slice()
+
+	if len(args) == 0 && !anyFlagSet(c) {
+		return cli.ShowAppHelp(c)
+	}
 
 	if err := arguments.ValidateArguments(args); err != nil {
 		return err
