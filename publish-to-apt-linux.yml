@@ -5,6 +5,12 @@ git_commit_email: picsum@siakhooi.github.io
 git_commit_message: "{repo_name}: {ref_name} | {commit_short}"
 
 files:
-  - source: dist/siakhooi-picsum_*_*.deb
-    target: docs/pool/main/picsum/
-    items: 3
+  - source: dist/siakhooi-picsum_*_amd64.deb
+    target: docs/pool/main/siakhooi-picsum/
+    items: 1
+  - source: dist/siakhooi-picsum_*_arm64.deb
+    target: docs/pool/main/siakhooi-picsum/
+    items: 1
+  - source: dist/siakhooi-picsum_*_i386.deb
+    target: docs/pool/main/siakhooi-picsum/
+    items: 1
