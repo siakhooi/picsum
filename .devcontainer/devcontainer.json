@@ -1,6 +1,6 @@
 {
-	"name": "GO 1.26 Development Dev Container",
-	"image": "siakhooi/devcontainer:go126_2604",
+	"name": "GO 1.27 Development Dev Container",
+	"image": "siakhooi/devcontainer:go127",
 	"remoteUser": "maui",
 	"containerUser": "maui",
 	"updateRemoteUserUID": true,
@@ -9,6 +9,7 @@
 		"vscode": {
 			"extensions": [
 				"lfm.vscode-makefile-term",
+				"nefrob.vscode-just",
 				"golang.go",
 				"humao.rest-client",
 				"ms-vscode.live-server",

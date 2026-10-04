@@ -5,6 +5,6 @@ git_commit_email: picsum@siakhooi.github.io
 git_commit_message: "{repo_name}: {ref_name} | {commit_short}"
 
 files:
-  - source: dist/siakhooi-picsum-*.x86_64.rpm
+  - source: dist/siakhooi-picsum-*.*.rpm
     target: docs/
-    items: 1
+    items: 3

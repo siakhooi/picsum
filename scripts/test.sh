@@ -1,8 +1,9 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e -x
+set -euo pipefail
+set -x
 
-go test -v -json -covermode=atomic -coverpkg=./... -coverprofile=test-coverage.out ./... |tee test-report.json
+go test -v -json -covermode=atomic -coverpkg=./... -coverprofile=test-coverage.out ./... | tee test-report.json
 
 go tool cover -func=test-coverage.out
 

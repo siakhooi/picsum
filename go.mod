@@ -1,5 +1,5 @@
 module github.com/siakhooi/picsum
 
-go 1.26.2
+go 1.27.1
 
 require github.com/urfave/cli/v3 v3.13.0
