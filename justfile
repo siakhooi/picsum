@@ -52,8 +52,10 @@ run-help:
 run-build:
     {{ picsum }} --build
 
+run *args:
+    {{ picsum }} {{ args }}
 # Exercise the common CLI paths
-run:
+run-common:
     {{ picsum }} 200
     {{ picsum }} -q 200 300
     {{ picsum }} -g 200 300
@@ -69,7 +71,6 @@ run:
     {{ picsum }} -q -g -b -s hellohello -o hello.jpg -f 200 300
 
 # Exercise invalid CLI paths
-run-i:
-    {{ picsum }}
-    {{ picsum }} 200 300 400
-    {{ picsum }} -i 237 -s hellohello 200 300
+run-invalid:
+    -{{ picsum }} 200 300 400
+    -{{ picsum }} -i 237 -s hellohello 200 300

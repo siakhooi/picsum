@@ -13,6 +13,11 @@ func TestRun_Success(t *testing.T) {
 		wantErr bool
 	}{
 		{
+			name:    "no arguments",
+			args:    []string{"picsum"},
+			wantErr: false,
+		},
+		{
 			name:    "help flag",
 			args:    []string{"picsum", "--help"},
 			wantErr: false,
@@ -41,11 +46,6 @@ func TestRun_Error(t *testing.T) {
 		args    []string
 		wantErr bool
 	}{
-		{
-			name:    "no arguments",
-			args:    []string{"picsum"},
-			wantErr: true,
-		},
 		{
 			name:    "too many arguments",
 			args:    []string{"picsum", "200", "300", "extra"},
